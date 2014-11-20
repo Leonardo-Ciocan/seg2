@@ -1,12 +1,14 @@
 package team2j.com.seg2;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -50,12 +52,18 @@ public class MainActivity extends Activity {
                         urls.add("http://api.worldbank.org/countries/"+dialog.selectedIDs.get(0)+"/indicators/"+indicator+"?date=1960:2009&format=json");
                     }
                 }
-                int x = 0;
+
+                Core.pending_downloads = urls.size();
+                for(String url : urls){
+                    new DownloadTask(url).execute(url);
+                }
+
+                Intent intent = new Intent(MainActivity.this , DataChartActivity.class);
+                startActivity(intent);
             }
         });
 
-         String URL = "http://api.worldbank.org/countries/GB/indicators/SP.POP.TOTL?date=1960:2009&format=json";
-        new DownloadTask(URL).execute(URL);
+
 
     }
 

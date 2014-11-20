@@ -20,15 +20,17 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-public class DownloadTask extends AsyncTask<String, Void, JSONObject> {
+public class DownloadTask extends AsyncTask<String, Void, Void> {
     ImageView bmImage;
 
     public DownloadTask(String URL) {
 
     }
 
-    protected JSONObject doInBackground(String... urls) {
+    protected Void doInBackground(String... urls) {
         DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
         HttpPost httppost = new HttpPost(urls[0]);
         //httppost.setHeader("Content-type", "application/json");
@@ -58,20 +60,34 @@ public class DownloadTask extends AsyncTask<String, Void, JSONObject> {
         }
 
         JSONArray jObject = null;
-        JSONObject object = null;
+        JSONArray object = null;
         String url = null;
         try {
             jObject = new JSONArray(result);
-            object = jObject.getJSONObject(1);
+            object = jObject.getJSONArray(1);
             int x = 0;
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        ArrayList<DataPoint> Data = new ArrayList<DataPoint>();
+        for(int x= 0; x< object.length();x++){
+            try {
+                JSONObject current = object.getJSONObject(x);
+                Data.add(new DataPoint(current.getInt("date"),current.getInt("value")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-        String urldisplay = url;
+        }
 
-        return object;
+        Core.DataSets.add(Data);
+        Core.pending_downloads--;
+        if(Core.pending_downloads == 0){
+            Core.listener.ready();
+        }
+
+        return null;
     }
 
     protected void onPostExecute(JSONObject result) {
