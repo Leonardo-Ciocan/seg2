@@ -31,7 +31,7 @@ public class DownloadTask extends AsyncTask<String, Void, JSONObject> {
     protected JSONObject doInBackground(String... urls) {
         DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
         HttpPost httppost = new HttpPost(urls[0]);
-        httppost.setHeader("Content-type", "application/json");
+        //httppost.setHeader("Content-type", "application/json");
 
         InputStream inputStream = null;
         String result = null;
@@ -44,7 +44,7 @@ public class DownloadTask extends AsyncTask<String, Void, JSONObject> {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
             StringBuilder sb = new StringBuilder();
 
-            String line = null;
+            String line = "";
             while ((line = reader.readLine()) != null)
             {
                 sb.append(line + "\n");

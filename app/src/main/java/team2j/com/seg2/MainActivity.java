@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends Activity {
 
@@ -32,7 +34,27 @@ public class MainActivity extends Activity {
             }
         });
 
-        String URL = "http://api.worldbank.org/countries/GB/indicators/SP.POP.TOTL?date=1960:2009&format=json";
+        Button searchButton = (Button)findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //String URL = "http://api.worldbank.org/countries/""/indicators/SP.POP.TOTL?date=1960:2009&format=json";
+                ArrayList<String> urls = new ArrayList<String>();
+                if(dialog.selectedIDs.size() > 1){
+                    for(String country : dialog.selectedIDs){
+                        urls.add("http://api.worldbank.org/countries/"+country+"/indicators/"+dialog2.selectedIDs.get(0)+"?date=1960:2009&format=json");
+                    }
+                }
+                else{
+                    for(String indicator : dialog2.selectedIDs){
+                        urls.add("http://api.worldbank.org/countries/"+dialog.selectedIDs.get(0)+"/indicators/"+indicator+"?date=1960:2009&format=json");
+                    }
+                }
+                int x = 0;
+            }
+        });
+
+         String URL = "http://api.worldbank.org/countries/GB/indicators/SP.POP.TOTL?date=1960:2009&format=json";
         new DownloadTask(URL).execute(URL);
 
     }
