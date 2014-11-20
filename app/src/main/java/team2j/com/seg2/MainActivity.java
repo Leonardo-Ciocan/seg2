@@ -32,7 +32,9 @@ public class MainActivity extends Activity {
             }
         });
 
-        String URL = "http://api.worldbank.org/countries/GB/indicators/";
+        String URL = "http://api.worldbank.org/countries/GB/indicators/SP.POP.TOTL?date=1960:2009&format=json";
+        new DownloadTask(URL).execute(URL);
+
     }
 
 
