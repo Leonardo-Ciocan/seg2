@@ -23,6 +23,26 @@
         android:layout_height="wrap_content"
         android:text="Select some indicators"/>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/yearFromButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="1960"/>
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/yearToButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="2014"/>
+    </LinearLayout>
+
     <Button
         android:id="@+id/searchButton"
         android:layout_width="match_parent"

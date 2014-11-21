@@ -19,41 +19,52 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final CountrySelectorDialog dialog = new CountrySelectorDialog();
         Button countryButton = (Button)findViewById(R.id.countryButton);
+        Button indicatorButton = (Button)findViewById(R.id.indicatorButton);
+        Button searchButton = (Button)findViewById(R.id.searchButton);
+        Button fromButton = (Button)findViewById(R.id.yearFromButton);
+        Button toButton = (Button)findViewById(R.id.yearToButton);
+
+        final CountrySelectorDialog countrySelectorDialog = new CountrySelectorDialog();
+        final IndicatorSelectorDialog indicatorSelectorDialog = new IndicatorSelectorDialog();
+        final YearSelectorDialog yearDialogTo = new YearSelectorDialog(toButton);
+        final YearSelectorDialog yearDialogFrom = new YearSelectorDialog(fromButton);
+
+
+
         countryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.show(getFragmentManager(),"diag");
+                countrySelectorDialog.show(getFragmentManager(), "diag");
             }
         });
 
-        final IndicatorSelectorDialog dialog2 = new IndicatorSelectorDialog();
-        Button indicatorButton = (Button)findViewById(R.id.indicatorButton);
         indicatorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog2.show(getFragmentManager(),"diag2");
+                indicatorSelectorDialog.show(getFragmentManager(), "diag2");
             }
         });
 
-        Button searchButton = (Button)findViewById(R.id.searchButton);
+
+
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //we must aggregate data from multiple urls
                 ArrayList<String> urls = new ArrayList<String>();
                 //if more than one country is selected then
-                if(dialog.selectedIDs.size() > 1){
+                if(countrySelectorDialog.selectedIDs.size() > 1){
                     //we iterate through the selected countries and create links for each country paired with the first indicator selector
-                    for(String country : dialog.selectedIDs){
-                        urls.add("http://api.worldbank.org/countries/"+country+"/indicators/"+dialog2.selectedIDs.get(0)+"?date=1960:2009&format=json");
+                    for(String country : countrySelectorDialog.selectedIDs){
+                        urls.add("http://api.worldbank.org/countries/"+country+"/indicators/"+indicatorSelectorDialog.selectedIDs.get(0)+"?date="+yearDialogFrom.selectedYear+":"+yearDialogTo.selectedYear+"&format=json");
                     }
                 }
                 else{
                     //else if multiple indicators are selected , we will pair the same country with multiple indicators
-                    for(String indicator : dialog2.selectedIDs){
-                        urls.add("http://api.worldbank.org/countries/"+dialog.selectedIDs.get(0)+"/indicators/"+indicator+"?date=1960:2009&format=json");
+                    for(String indicator : indicatorSelectorDialog.selectedIDs){
+                        urls.add("http://api.worldbank.org/countries/"+countrySelectorDialog.selectedIDs.get(0)+"/indicators/"+indicator+"?date="+yearDialogFrom.selectedYear+":"+yearDialogTo.selectedYear+"&format=json");
                     }
                 }
 
@@ -68,6 +79,19 @@ public class MainActivity extends Activity {
             }
         });
 
+        fromButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                yearDialogFrom.show(getFragmentManager(), "from");
+            }
+        });
+
+        toButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                yearDialogTo.show(getFragmentManager(), "to");
+            }
+        });
 
 
     }
