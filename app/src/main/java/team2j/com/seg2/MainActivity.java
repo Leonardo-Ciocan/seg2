@@ -18,6 +18,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         final CountrySelectorDialog dialog = new CountrySelectorDialog();
         Button countryButton = (Button)findViewById(R.id.countryButton);
         countryButton.setOnClickListener(new View.OnClickListener() {
@@ -40,19 +41,23 @@ public class MainActivity extends Activity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //String URL = "http://api.worldbank.org/countries/""/indicators/SP.POP.TOTL?date=1960:2009&format=json";
+                //we must aggregate data from multiple urls
                 ArrayList<String> urls = new ArrayList<String>();
+                //if more than one country is selected then
                 if(dialog.selectedIDs.size() > 1){
+                    //we iterate through the selected countries and create links for each country paired with the first indicator selector
                     for(String country : dialog.selectedIDs){
                         urls.add("http://api.worldbank.org/countries/"+country+"/indicators/"+dialog2.selectedIDs.get(0)+"?date=1960:2009&format=json");
                     }
                 }
                 else{
+                    //else if multiple indicators are selected , we will pair the same country with multiple indicators
                     for(String indicator : dialog2.selectedIDs){
                         urls.add("http://api.worldbank.org/countries/"+dialog.selectedIDs.get(0)+"/indicators/"+indicator+"?date=1960:2009&format=json");
                     }
                 }
 
+                //the numbers of urls is stored to know when all downloads are done
                 Core.pending_downloads = urls.size();
                 for(String url : urls){
                     new DownloadTask(url).execute(url);

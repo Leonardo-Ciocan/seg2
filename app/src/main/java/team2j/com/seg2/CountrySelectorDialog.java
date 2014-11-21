@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class CountrySelectorDialog extends DialogFragment {
 
+    //the country name shown to the user and equivalent id
     final String[] countries = {"United Kingdom", "Spain", "France"};
     final String[] countriesID = {"gb", "es", "fr"};
 
@@ -24,6 +25,7 @@ public class CountrySelectorDialog extends DialogFragment {
                 .setMultiChoiceItems(countries, null,
                         new DialogInterface.OnMultiChoiceClickListener() {
                             public void onClick(DialogInterface dialog, int item, boolean isChecked) {
+                                //add and remove ids on selected/unselected
                                 if(isChecked){
                                     selectedIDs.add(countriesID[item]);
                                 }

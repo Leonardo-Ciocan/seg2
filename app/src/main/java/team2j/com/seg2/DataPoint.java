@@ -1,5 +1,8 @@
 package team2j.com.seg2;
 
+/**
+ * This is a single point in the graph , year is X and value is Y
+ */
 public class DataPoint {
     Integer year;
     Integer value;

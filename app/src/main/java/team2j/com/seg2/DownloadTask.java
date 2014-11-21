@@ -30,6 +30,7 @@ public class DownloadTask extends AsyncTask<String, Void, Void> {
 
     }
 
+    //the network operations are run in the background
     protected Void doInBackground(String... urls) {
         DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
         HttpPost httppost = new HttpPost(urls[0]);
@@ -59,6 +60,7 @@ public class DownloadTask extends AsyncTask<String, Void, Void> {
             try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
         }
 
+        //this will extract the jsonarray , currently works for the population
         JSONArray jObject = null;
         JSONArray object = null;
         String url = null;
@@ -70,6 +72,7 @@ public class DownloadTask extends AsyncTask<String, Void, Void> {
             e.printStackTrace();
         }
 
+        //we iterate through the array , extract the date and value and add it to our arraylist
         ArrayList<DataPoint> Data = new ArrayList<DataPoint>();
         for(int x= 0; x< object.length();x++){
             try {
@@ -82,7 +85,9 @@ public class DownloadTask extends AsyncTask<String, Void, Void> {
         }
 
         Core.DataSets.add(Data);
+        //this download is done
         Core.pending_downloads--;
+        //if it's the last one then we are done downloading - draw the chart
         if(Core.pending_downloads == 0){
             Core.listener.ready();
         }

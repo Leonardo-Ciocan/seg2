@@ -30,14 +30,17 @@ public class DataChartActivity extends Activity {
         setContentView(R.layout.activity_datachart);
         final BarChart chart = (BarChart) findViewById(R.id.chart);
 
+        //triggered when the last json download finished converting
         Core.addOnDataSetsReady(new Core.OnDataSetsReady(){
 
             @Override
             public void ready() {
 
+                //each DataPoint is converted to a BarEntry
                 ArrayList<ArrayList<BarEntry>> values = new ArrayList<ArrayList<BarEntry>>();
 
                 for(ArrayList<DataPoint> pairs : Core.DataSets){
+                    //data must be sorted by year
                     Collections.sort(pairs , new Comparator<DataPoint>() {
                         @Override
                         public int compare(DataPoint lhs, DataPoint rhs) {
@@ -51,6 +54,7 @@ public class DataChartActivity extends Activity {
                     values.add(entries);
                 }
 
+                //this needs to be updated :|
                 ArrayList<BarDataSet> lineDataSets = new ArrayList<BarDataSet>();
                 for(ArrayList<BarEntry> entryArrayList : values){
                     BarDataSet dataSet = new BarDataSet(entryArrayList , "GB");
@@ -59,6 +63,7 @@ public class DataChartActivity extends Activity {
                     lineDataSets.add(dataSet);
                 }
 
+                //all the X values we can have
                 ArrayList<String> years = new ArrayList<String>();
                 for(int x = 1960 ; x < 2014;x++){
                     years.add(String.valueOf(x));
