@@ -19,8 +19,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button countryButton = (Button)findViewById(R.id.countryButton);
-        Button indicatorButton = (Button)findViewById(R.id.indicatorButton);
+        final Button countryButton = (Button)findViewById(R.id.countryButton);
+        final Button indicatorButton = (Button)findViewById(R.id.indicatorButton);
         Button searchButton = (Button)findViewById(R.id.searchButton);
         Button fromButton = (Button)findViewById(R.id.yearFromButton);
         Button toButton = (Button)findViewById(R.id.yearToButton);
@@ -31,6 +31,19 @@ public class MainActivity extends Activity {
         final YearSelectorDialog yearDialogFrom = new YearSelectorDialog(fromButton);
 
 
+        indicatorSelectorDialog.setSelectionChangedListener(new SelectionChanged() {
+            @Override
+            public void onSelectionChanged(String newSelection) {
+                indicatorButton.setText(newSelection);
+            }
+        });
+
+        countrySelectorDialog.setSelectionChangedListener(new SelectionChanged() {
+            @Override
+            public void onSelectionChanged(String newSelection) {
+                countryButton.setText(newSelection);
+            }
+        });
 
         countryButton.setOnClickListener(new View.OnClickListener() {
             @Override
