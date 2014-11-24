@@ -80,7 +80,15 @@ public class DataChartActivity extends Activity {
                 chart.setData(data);
                 chart.notifyDataSetChanged();
 
-                
+                //this handler was called from the network thread so we must go back to the ui
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //chart.invalidate();
+                        chart.animateY(3000);
+                    }
+                });
+
             }
         });
 
