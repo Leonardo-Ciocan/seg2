@@ -20,12 +20,14 @@ public class YearSelectorDialog extends DialogFragment {
 
     Button linkedButton;
 
+    boolean isOnLastYear;
     public YearSelectorDialog(){}
-    public YearSelectorDialog(Button linkedButton){
+    public YearSelectorDialog(Button linkedButton , boolean isOnLastYear){
         this.linkedButton = linkedButton;
         for(int x = 1960 ; x <= 2014;x++){
             years.add(String.valueOf(x));
         }
+        selectedYearId = isOnLastYear ? years.size()-1:0;
     }
 
 

@@ -27,8 +27,8 @@ public class MainActivity extends Activity {
 
         final CountrySelectorDialog countrySelectorDialog = new CountrySelectorDialog();
         final IndicatorSelectorDialog indicatorSelectorDialog = new IndicatorSelectorDialog();
-        final YearSelectorDialog yearDialogTo = new YearSelectorDialog(toButton);
-        final YearSelectorDialog yearDialogFrom = new YearSelectorDialog(fromButton);
+        final YearSelectorDialog yearDialogTo = new YearSelectorDialog(toButton,true);
+        final YearSelectorDialog yearDialogFrom = new YearSelectorDialog(fromButton,false);
 
 
         indicatorSelectorDialog.setSelectionChangedListener(new SelectionChanged() {
