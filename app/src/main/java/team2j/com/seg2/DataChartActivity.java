@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
@@ -28,7 +28,7 @@ public class DataChartActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_datachart);
-        final BarChart chart = (BarChart) findViewById(R.id.chart);
+        final LineChart chart = (LineChart) findViewById(R.id.chart);
 
         //triggered when the last json download finished converting
         Core.addOnDataSetsReady(new Core.OnDataSetsReady(){
@@ -37,7 +37,7 @@ public class DataChartActivity extends Activity {
             public void ready() {
 
                 //each DataPoint is converted to a BarEntry
-                ArrayList<ArrayList<BarEntry>> values = new ArrayList<ArrayList<BarEntry>>();
+                ArrayList<ArrayList<Entry>> values = new ArrayList<ArrayList<Entry>>();
 
                 for(ArrayList<DataPoint> pairs : Core.DataSets){
                     //data must be sorted by year
@@ -47,7 +47,7 @@ public class DataChartActivity extends Activity {
                             return lhs.getYear() > rhs.getYear() ? 1 : 0;
                         }
                     });
-                    ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+                    ArrayList<Entry> entries = new ArrayList<Entry>();
                     for(DataPoint point : pairs){
                         entries.add(new BarEntry(point.getValue(),point.getYear() - 1960));
                     }
@@ -55,11 +55,12 @@ public class DataChartActivity extends Activity {
                 }
 
                 //this needs to be updated :|
-                ArrayList<BarDataSet> lineDataSets = new ArrayList<BarDataSet>();
-                for(ArrayList<BarEntry> entryArrayList : values){
-                    BarDataSet dataSet = new BarDataSet(entryArrayList , "GB");
+                ArrayList<LineDataSet> lineDataSets = new ArrayList<LineDataSet>();
+                for(ArrayList<Entry> entryArrayList : values){
+                    LineDataSet dataSet = new LineDataSet(entryArrayList , "GB");
                     dataSet.setColor(Color.RED);
-                   // dataSet.setLineWidth(5);
+                    dataSet.setHighLightColor(Color.BLACK);
+                    dataSet.setLineWidth(5);
                     lineDataSets.add(dataSet);
                 }
 
@@ -69,25 +70,17 @@ public class DataChartActivity extends Activity {
                     years.add(String.valueOf(x));
                 }
 
-                BarData data = new BarData(years ,  lineDataSets);
+                LineData data = new LineData(years ,  lineDataSets);
 
 
-               // chart.setDrawValueAboveBar(false);
+                //this disables the values label
                 chart.setDrawYValues(false);
-
+                //this centers the graph so there isn't blank space at the bottom
+                chart.setStartAtZero(false);
                 chart.setData(data);
                 chart.notifyDataSetChanged();
-                /*ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-                ArrayList<Entry> valsComp1 = new ArrayList<Entry>();
-                valsComp1.add(new Entry(10,0));
-                valsComp1.add(new Entry(15,1));
-                valsComp1.add(new Entry(20,2));
-                LineDataSet setComp1 = new LineDataSet(valsComp1, "uk");
-                dataSets.add(setComp1);
-                ArrayList<String> xVals = new ArrayList<String>();
-                xVals.add("0"); xVals.add("1"); xVals.add("2");
-                LineData data = new LineData(xVals, dataSets);
-                chart.setData(data);*/
+
+                
             }
         });
 
