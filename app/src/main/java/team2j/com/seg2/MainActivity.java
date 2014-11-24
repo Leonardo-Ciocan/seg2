@@ -2,6 +2,7 @@ package team2j.com.seg2;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +30,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.brandColor)));
+        getActionBar().setTitle("SEG 2 Prototype");
 
         countryButton = (Button)findViewById(R.id.countryButton);
         indicatorButton = (Button)findViewById(R.id.indicatorButton);

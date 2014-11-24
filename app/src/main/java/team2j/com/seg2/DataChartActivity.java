@@ -2,6 +2,7 @@ package team2j.com.seg2;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -29,6 +30,9 @@ public class DataChartActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_datachart);
         final LineChart chart = (LineChart) findViewById(R.id.chart);
+
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.brandColor)));
+        getActionBar().setTitle("SEG 2 Prototype - Chart");
 
         //triggered when the last json download finished converting
         Core.addOnDataSetsReady(new Core.OnDataSetsReady(){
@@ -58,8 +62,10 @@ public class DataChartActivity extends Activity {
                 ArrayList<LineDataSet> lineDataSets = new ArrayList<LineDataSet>();
                 for(ArrayList<Entry> entryArrayList : values){
                     LineDataSet dataSet = new LineDataSet(entryArrayList , "GB");
-                    dataSet.setColor(Color.RED);
-                    dataSet.setHighLightColor(Color.BLACK);
+                    dataSet.setColor(getResources().getColor(R.color.brandColor));
+                    dataSet.setHighLightColor(getResources().getColor(R.color.brandColor));
+                    dataSet.setCircleColor(Color.BLACK);
+
                     dataSet.setLineWidth(5);
                     lineDataSets.add(dataSet);
                 }
@@ -71,6 +77,7 @@ public class DataChartActivity extends Activity {
                 }
 
                 LineData data = new LineData(years ,  lineDataSets);
+
 
 
                 //this disables the values label
