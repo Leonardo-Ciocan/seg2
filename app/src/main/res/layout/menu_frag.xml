@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Together"
+        android:id="@+id/btnTogetherFrag"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_weight = "1"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seperate"
+        android:id="@+id/btnSeperateFrag"
+        android:layout_toEndOf="@+id/btnTogetherFrag"
+        android:layout_marginLeft="26dp"
+        android:layout_weight = "1"
+
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/btnTogetherFrag" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MutliGraphes"
+        android:id="@+id/btnMultiGraphesFrag"
+
+        android:layout_toEndOf="@+id/btnSeperateFrag"
+        android:layout_marginLeft="28dp"
+        android:layout_alignParentTop="true"
+        android:layout_weight = "1"
+        android:layout_toRightOf="@+id/btnSeperateFrag" />
+</RelativeLayout>
