@@ -14,21 +14,32 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
+    private Button countryButton;
+    private Button indicatorButton;
+    private Button searchButton;
+    private Button fromButton;
+    private Button toButton;
+
+    private CountrySelectorDialog countrySelectorDialog;
+    private IndicatorSelectorDialog indicatorSelectorDialog;
+    private YearSelectorDialog yearDialogTo;
+    private YearSelectorDialog yearDialogFrom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Button countryButton = (Button)findViewById(R.id.countryButton);
-        final Button indicatorButton = (Button)findViewById(R.id.indicatorButton);
-        Button searchButton = (Button)findViewById(R.id.searchButton);
-        Button fromButton = (Button)findViewById(R.id.yearFromButton);
-        Button toButton = (Button)findViewById(R.id.yearToButton);
+        countryButton = (Button)findViewById(R.id.countryButton);
+        indicatorButton = (Button)findViewById(R.id.indicatorButton);
+        searchButton = (Button)findViewById(R.id.searchButton);
+        fromButton = (Button)findViewById(R.id.yearFromButton);
+        toButton = (Button)findViewById(R.id.yearToButton);
 
-        final CountrySelectorDialog countrySelectorDialog = new CountrySelectorDialog();
-        final IndicatorSelectorDialog indicatorSelectorDialog = new IndicatorSelectorDialog();
-        final YearSelectorDialog yearDialogTo = new YearSelectorDialog(toButton,true);
-        final YearSelectorDialog yearDialogFrom = new YearSelectorDialog(fromButton,false);
+        countrySelectorDialog = new CountrySelectorDialog();
+        indicatorSelectorDialog = new IndicatorSelectorDialog();
+        yearDialogTo = new YearSelectorDialog(toButton,true);
+        yearDialogFrom = new YearSelectorDialog(fromButton,false);
 
 
         indicatorSelectorDialog.setSelectionChangedListener(new SelectionChanged() {
@@ -65,30 +76,31 @@ public class MainActivity extends Activity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //we must aggregate data from multiple urls
-                ArrayList<String> urls = new ArrayList<String>();
-                //if more than one country is selected then
-                if(countrySelectorDialog.selectedIDs.size() > 1){
-                    //we iterate through the selected countries and create links for each country paired with the first indicator selector
-                    for(String country : countrySelectorDialog.selectedIDs){
-                        urls.add("http://api.worldbank.org/countries/"+country+"/indicators/"+indicatorSelectorDialog.selectedIDs.get(0)+"?date="+yearDialogFrom.selectedYear+":"+yearDialogTo.selectedYear+"&format=json");
+                if(isValidInput()){
+                    //we must aggregate data from multiple urls
+                    ArrayList<String> urls = new ArrayList<String>();
+                    //if more than one country is selected then
+                    if (countrySelectorDialog.selectedIDs.size() > 1) {
+                        //we iterate through the selected countries and create links for each country paired with the first indicator selector
+                        for (String country : countrySelectorDialog.selectedIDs) {
+                            urls.add("http://api.worldbank.org/countries/" + country + "/indicators/" + indicatorSelectorDialog.selectedIDs.get(0) + "?date=" + yearDialogFrom.selectedYear + ":" + yearDialogTo.selectedYear + "&format=json");
+                        }
+                    } else {
+                        //else if multiple indicators are selected , we will pair the same country with multiple indicators
+                        for (String indicator : indicatorSelectorDialog.selectedIDs) {
+                            urls.add("http://api.worldbank.org/countries/" + countrySelectorDialog.selectedIDs.get(0) + "/indicators/" + indicator + "?date=" + yearDialogFrom.selectedYear + ":" + yearDialogTo.selectedYear + "&format=json");
+                        }
                     }
-                }
-                else{
-                    //else if multiple indicators are selected , we will pair the same country with multiple indicators
-                    for(String indicator : indicatorSelectorDialog.selectedIDs){
-                        urls.add("http://api.worldbank.org/countries/"+countrySelectorDialog.selectedIDs.get(0)+"/indicators/"+indicator+"?date="+yearDialogFrom.selectedYear+":"+yearDialogTo.selectedYear+"&format=json");
+
+                    //the numbers of urls is stored to know when all downloads are done
+                    Core.pending_downloads = urls.size();
+                    for (String url : urls) {
+                        new DownloadTask(url).execute(url);
                     }
-                }
 
-                //the numbers of urls is stored to know when all downloads are done
-                Core.pending_downloads = urls.size();
-                for(String url : urls){
-                    new DownloadTask(url).execute(url);
+                    Intent intent = new Intent(MainActivity.this, DataChartActivity.class);
+                    startActivity(intent);
                 }
-
-                Intent intent = new Intent(MainActivity.this , DataChartActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -109,6 +121,13 @@ public class MainActivity extends Activity {
 
     }
 
+    public boolean isValidInput(){
+        if(countrySelectorDialog.selectedIDs.size() == 0 || indicatorSelectorDialog.selectedIDs.size() ==0)
+            return false;
+        if(Integer.parseInt(yearDialogTo.selectedYear) < Integer.parseInt(yearDialogFrom.selectedYear))
+            return false;
+        return true;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
