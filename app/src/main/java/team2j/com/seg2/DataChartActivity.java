@@ -72,11 +72,11 @@ public class DataChartActivity extends Activity {
                 BarData data = new BarData(years ,  lineDataSets);
 
 
+               // chart.setDrawValueAboveBar(false);
+                chart.setDrawYValues(false);
 
                 chart.setData(data);
-                chart.setDrawXLabels(false);
                 chart.notifyDataSetChanged();
-
                 /*ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
                 ArrayList<Entry> valsComp1 = new ArrayList<Entry>();
                 valsComp1.add(new Entry(10,0));

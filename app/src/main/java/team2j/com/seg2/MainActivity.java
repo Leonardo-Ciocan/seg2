@@ -77,6 +77,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if(isValidInput()){
+                    Core.DataSets.clear();
                     //we must aggregate data from multiple urls
                     ArrayList<String> urls = new ArrayList<String>();
                     //if more than one country is selected then
