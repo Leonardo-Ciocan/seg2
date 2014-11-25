@@ -34,6 +34,8 @@ public class DataChartActivity extends Activity {
 
         final LineChart chart = (LineChart) findViewById(R.id.chart);
 
+        chart.setNoDataText("Drawing data , please wait.");
+
         getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.brandColor)));
         getActionBar().setTitle(getIntent().getStringExtra("title"));
         chart.setDescription(getIntent().getStringExtra("description"));
@@ -73,7 +75,7 @@ public class DataChartActivity extends Activity {
                     dataSet.setHighLightColor(Color.BLACK);
                     dataSet.setCircleColor(dataSet.getColor());
                     first = false;
-                    dataSet.setLineWidth(3);
+                    dataSet.setLineWidth(2.5f);
 
                     dataSet.setCircleSize(1f);
                     //dataSet.setDrawCubic(true);
