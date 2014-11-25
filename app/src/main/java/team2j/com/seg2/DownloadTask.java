@@ -72,16 +72,16 @@ public class DownloadTask extends AsyncTask<String, Void, Void> {
             e.printStackTrace();
         }
 
+        if(object == null) return null;
         //we iterate through the array , extract the date and value and add it to our arraylist
         ArrayList<DataPoint> Data = new ArrayList<DataPoint>();
-        for(int x= 0; x< object.length();x++){
+        for(int x = 0; x < object.length();x++){
             try {
                 JSONObject current = object.getJSONObject(x);
                 Data.add(new DataPoint(current.getInt("date"),current.getInt("value")));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
 
         Core.DataSets.add(new DataSet(urls[1],Data));

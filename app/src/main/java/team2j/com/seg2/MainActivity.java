@@ -51,14 +51,14 @@ public class MainActivity extends Activity {
         indicatorSelectorDialog.setSelectionChangedListener(new SelectionChanged() {
             @Override
             public void onSelectionChanged(String newSelection) {
-                indicatorButton.setText(newSelection);
+                indicatorButton.setText("Graphing : " + newSelection);
             }
         });
 
         countrySelectorDialog.setSelectionChangedListener(new SelectionChanged() {
             @Override
             public void onSelectionChanged(String newSelection) {
-                countryButton.setText(newSelection);
+                countryButton.setText("Countries: " + newSelection);
             }
         });
 
@@ -90,7 +90,7 @@ public class MainActivity extends Activity {
                     if (countrySelectorDialog.selectedIDs.size() > 1) {
                         //we iterate through the selected countries and create links for each country paired with the first indicator selector
                         for (String country : countrySelectorDialog.selectedIDs) {
-                            urls.put(countrySelectorDialog.selectedCountries.get(0) ,  "http://api.worldbank.org/countries/" + country + "/indicators/" + indicatorSelectorDialog.selectedIDs.get(0) + "?date=" + yearDialogFrom.selectedYear + ":" + yearDialogTo.selectedYear + "&format=json");
+                            urls.put(country,  "http://api.worldbank.org/countries/" + country + "/indicators/" + indicatorSelectorDialog.selectedIDs.get(0) + "?date=" + yearDialogFrom.selectedYear + ":" + yearDialogTo.selectedYear + "&format=json");
                         }
                     } else {
                         //else if multiple indicators are selected , we will pair the same country with multiple indicators
