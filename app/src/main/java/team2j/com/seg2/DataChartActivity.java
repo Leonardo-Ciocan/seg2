@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Random;
 
 
 public class DataChartActivity extends Activity {
@@ -29,10 +30,12 @@ public class DataChartActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_datachart);
+
+
         final LineChart chart = (LineChart) findViewById(R.id.chart);
 
         getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.brandColor)));
-        getActionBar().setTitle("SEG 2 Prototype - Chart");
+        getActionBar().setTitle(getIntent().getStringExtra("title"));
 
         //triggered when the last json download finished converting
         Core.addOnDataSetsReady(new Core.OnDataSetsReady(){
@@ -43,29 +46,31 @@ public class DataChartActivity extends Activity {
                 //each DataPoint is converted to a BarEntry
                 ArrayList<ArrayList<Entry>> values = new ArrayList<ArrayList<Entry>>();
 
-                for(ArrayList<DataPoint> pairs : Core.DataSets){
+                for(DataSet pairs : Core.DataSets){
                     //data must be sorted by year
-                    Collections.sort(pairs , new Comparator<DataPoint>() {
+                    Collections.sort(pairs.getPoints() , new Comparator<DataPoint>() {
                         @Override
                         public int compare(DataPoint lhs, DataPoint rhs) {
                             return lhs.getYear() > rhs.getYear() ? 1 : 0;
                         }
                     });
                     ArrayList<Entry> entries = new ArrayList<Entry>();
-                    for(DataPoint point : pairs){
+                    for(DataPoint point : pairs.getPoints()){
                         entries.add(new BarEntry(point.getValue(),point.getYear() - 1960));
                     }
                     values.add(entries);
                 }
 
+                Random rnd = new Random();
+                boolean first = true;
                 //this needs to be updated :|
                 ArrayList<LineDataSet> lineDataSets = new ArrayList<LineDataSet>();
                 for(ArrayList<Entry> entryArrayList : values){
                     LineDataSet dataSet = new LineDataSet(entryArrayList , "GB");
-                    dataSet.setColor(getResources().getColor(R.color.brandColor));
-                    dataSet.setHighLightColor(getResources().getColor(R.color.brandColor));
+                    dataSet.setColor(first ? getResources().getColor(R.color.brandColor) : Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)) );
+                    dataSet.setHighLightColor(dataSet.getColor());
                     dataSet.setCircleColor(Color.BLACK);
-
+                    first = false;
                     dataSet.setLineWidth(5);
                     lineDataSets.add(dataSet);
                 }

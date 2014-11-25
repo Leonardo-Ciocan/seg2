@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Core {
     // a list of data points is a line that represents a trend , so this is a list of lines
-    public static ArrayList<ArrayList<DataPoint>> DataSets = new ArrayList<ArrayList<DataPoint>>();
+    public static ArrayList<DataSet> DataSets = new ArrayList<DataSet>();
     public static int pending_downloads = 0;
 
     //this is triggered when all downloads are done

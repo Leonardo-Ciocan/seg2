@@ -84,7 +84,7 @@ public class DownloadTask extends AsyncTask<String, Void, Void> {
 
         }
 
-        Core.DataSets.add(Data);
+        Core.DataSets.add(new DataSet(urls[1],Data));
         //this download is done
         Core.pending_downloads--;
         //if it's the last one then we are done downloading - draw the chart
