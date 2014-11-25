@@ -36,7 +36,7 @@ public class DataChartActivity extends Activity {
 
         getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.brandColor)));
         getActionBar().setTitle(getIntent().getStringExtra("title"));
-
+        chart.setDescription(getIntent().getStringExtra("description"));
         //triggered when the last json download finished converting
         Core.addOnDataSetsReady(new Core.OnDataSetsReady(){
 
@@ -48,7 +48,7 @@ public class DataChartActivity extends Activity {
 
                 for(DataSet pairs : Core.DataSets){
                     //data must be sorted by year
-                    Collections.sort(pairs.getPoints() , new Comparator<DataPoint>() {
+                    Collections.sort(pairs.getPoints(), new Comparator<DataPoint>() {
                         @Override
                         public int compare(DataPoint lhs, DataPoint rhs) {
                             return lhs.getYear() > rhs.getYear() ? 1 : 0;
@@ -63,15 +63,22 @@ public class DataChartActivity extends Activity {
 
                 Random rnd = new Random();
                 boolean first = true;
+                int n = 0;
                 //this needs to be updated :|
                 ArrayList<LineDataSet> lineDataSets = new ArrayList<LineDataSet>();
                 for(ArrayList<Entry> entryArrayList : values){
-                    LineDataSet dataSet = new LineDataSet(entryArrayList , "GB");
+                    LineDataSet dataSet = new LineDataSet(entryArrayList , Core.DataSets.get(n).getName());
+                    n++;
                     dataSet.setColor(first ? getResources().getColor(R.color.brandColor) : Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)) );
-                    dataSet.setHighLightColor(dataSet.getColor());
-                    dataSet.setCircleColor(Color.BLACK);
+                    dataSet.setHighLightColor(Color.BLACK);
+                    dataSet.setCircleColor(dataSet.getColor());
                     first = false;
-                    dataSet.setLineWidth(5);
+                    dataSet.setLineWidth(3);
+
+                    dataSet.setCircleSize(1f);
+                    //dataSet.setDrawCubic(true);
+                   // dataSet.setCubicIntensity(1);
+
                     lineDataSets.add(dataSet);
                 }
 

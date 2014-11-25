@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -90,7 +91,7 @@ public class MainActivity extends Activity {
                     if (countrySelectorDialog.selectedIDs.size() > 1) {
                         //we iterate through the selected countries and create links for each country paired with the first indicator selector
                         for (String country : countrySelectorDialog.selectedIDs) {
-                            urls.put(country,  "http://api.worldbank.org/countries/" + country + "/indicators/" + indicatorSelectorDialog.selectedIDs.get(0) + "?date=" + yearDialogFrom.selectedYear + ":" + yearDialogTo.selectedYear + "&format=json");
+                            urls.put(countrySelectorDialog.selectedCountries.get(countrySelectorDialog.selectedIDs.indexOf(country)),  "http://api.worldbank.org/countries/" + country + "/indicators/" + indicatorSelectorDialog.selectedIDs.get(0) + "?date=" + yearDialogFrom.selectedYear + ":" + yearDialogTo.selectedYear + "&format=json");
                         }
                     } else {
                         //else if multiple indicators are selected , we will pair the same country with multiple indicators
@@ -106,7 +107,8 @@ public class MainActivity extends Activity {
                     }
 
                     Intent intent = new Intent(MainActivity.this, DataChartActivity.class);
-                    intent.putExtra("title" , countrySelectorDialog.selectedCountries.get(0));
+                    intent.putExtra("title" , TextUtils.join(", " , countrySelectorDialog.selectedCountries));
+                    intent.putExtra("description" , TextUtils.join(", " , indicatorSelectorDialog.selectedIndicators));
                     startActivity(intent);
                 }
             }
