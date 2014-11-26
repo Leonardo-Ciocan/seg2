@@ -5,8 +5,8 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    android:paddingBottom="0dp"
-    android:orientation="horizontal"
+    android:paddingBottom="10dp"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <FrameLayout
@@ -16,20 +16,5 @@
 
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_marginLeft="10dp"
-        android:id="@+id/countryDetailFragmentHolder"
-        android:layout_width="300dp"
-        android:layout_height="match_parent">
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/chartHolder"
-        android:layout_marginLeft="10dp"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent">
-
-        </FrameLayout>
 
 </LinearLayout>

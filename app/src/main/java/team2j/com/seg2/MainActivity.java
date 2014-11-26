@@ -35,6 +35,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getActionBar().hide();
 
         getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.brandColor)));
         getActionBar().setTitle("SEG 2 Prototype");

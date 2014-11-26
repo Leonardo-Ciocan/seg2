@@ -26,6 +26,8 @@ public class Core {
             add(new Country("United Kingdom" , "gb"));
             add(new Country("Spain" , "es"));
             add(new Country("France" , "fr"));
+            add(new Country("Iraq" , "irq"));
+            add(new Country("Italy" , "it"));
         }
     };
 
@@ -44,7 +46,8 @@ public class Core {
             e.printStackTrace();
         }
 
-        if(object == null) return null;
+        if(object == null)
+            return null;
         for(int x = 0; x < object.length();x++){
             try {
                 JSONObject current = object.getJSONObject(x);
@@ -56,29 +59,6 @@ public class Core {
         return history;
     }
 
-    public static ArrayList<DataPoint> parseLifeExpectancy(String json){
-        ArrayList<DataPoint> history = new ArrayList<DataPoint>();
-        JSONArray jObject = null;
-        JSONArray object = null;
-        String url = null;
-        try {
-            jObject = new JSONArray(json);
-            object = jObject.getJSONArray(1);
-            int x = 0;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        if(object == null) return null;
-        for(int x = 0; x < object.length();x++){
-            try {
-                JSONObject current = object.getJSONObject(x);
-                history.add(new DataPoint(current.getInt("date"),current.getInt("value")));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return history;
-    }
 }
 

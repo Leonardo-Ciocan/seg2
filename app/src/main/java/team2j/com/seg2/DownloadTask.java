@@ -14,6 +14,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreProtocolPNames;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +37,8 @@ public class DownloadTask extends AsyncTask<String, Object, Object> {
     //the network operations are run in the background
     protected Object doInBackground(String... urls) {
         DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
+        httpclient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36");
+
         HttpPost httppost = new HttpPost(urls[0]);
 
         InputStream inputStream = null;
