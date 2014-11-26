@@ -28,7 +28,7 @@ public class YearSelectorDialog extends DialogFragment {
             years.add(String.valueOf(x));
         }
         this.isOnLastYear = isOnLastYear;
-        selectedYear = isOnLastYear ? "To 2014" : "From 1960";
+        selectedYear = isOnLastYear ? "2014" : "1960";
         selectedYearId = isOnLastYear ? years.size()-1:0;
     }
 

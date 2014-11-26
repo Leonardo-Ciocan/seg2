@@ -78,8 +78,8 @@ public class DataChartActivity extends Activity {
                     dataSet.setLineWidth(2.5f);
 
                     dataSet.setCircleSize(1f);
-                    //dataSet.setDrawCubic(true);
-                   // dataSet.setCubicIntensity(1);
+                   //dataSet.setDrawCubic(true);
+                   // dataSet.setCubicIntensity(10);
 
                     lineDataSets.add(dataSet);
                 }
@@ -106,7 +106,7 @@ public class DataChartActivity extends Activity {
                     @Override
                     public void run() {
                         //chart.invalidate();
-                        chart.animateY(3000);
+                        chart.animateY(1400);
                     }
                 });
 
