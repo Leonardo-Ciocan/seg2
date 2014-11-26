@@ -20,16 +20,6 @@ import java.util.HashMap;
 
 public class MainActivity extends Activity {
 
-    private Button countryButton;
-    private Button indicatorButton;
-    private Button searchButton;
-    private Button fromButton;
-    private Button toButton;
-
-    private CountrySelectorDialog countrySelectorDialog;
-    private IndicatorSelectorDialog indicatorSelectorDialog;
-    private YearSelectorDialog yearDialogTo;
-    private YearSelectorDialog yearDialogFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +27,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         getActionBar().hide();
 
-        getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.brandColor)));
-        getActionBar().setTitle("SEG 2 Prototype");
+
 
         CountriesFragment fragment = new CountriesFragment();
 
@@ -55,11 +44,16 @@ public class MainActivity extends Activity {
         FrameLayout chartHolder = (FrameLayout)findViewById(R.id.chartHolder);
         getFragmentManager().beginTransaction().add(chartHolder.getId() , chartFragment).commit();
 
+        getFragmentManager().beginTransaction().hide(chartFragment).commit();
+        getFragmentManager().beginTransaction().hide(detailFragment).commit();
+
 
         fragment.setListener(new CountriesFragment.CountrySelected() {
             @Override
             public void selected(Country c) {
-                getFragmentManager().beginTransaction().hide(chartFragment).commit();
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show,R.anim.hide).hide(chartFragment).commit();
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show,R.anim.hide).show(detailFragment).commit();
+
                 detailFragment.setCountry(c);
             }
         });
@@ -69,7 +63,7 @@ public class MainActivity extends Activity {
         detailFragment.setListener(new CountryDetailFragment.IndicatorSelected() {
             @Override
             public void selected(ArrayList<DataPoint> points) {
-                getFragmentManager().beginTransaction().show(chartFragment).commit();
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show,R.anim.hide).show(chartFragment).commit();
                 chartFragment.renderData(points);
             }
         });
@@ -80,10 +74,11 @@ public class MainActivity extends Activity {
     }
 
     public boolean isValidInput(){
-        if(countrySelectorDialog.selectedIDs.size() == 0 || indicatorSelectorDialog.selectedIDs.size() ==0)
+        /*if(countrySelectorDialog.selectedIDs.size() == 0 || indicatorSelectorDialog.selectedIDs.size() ==0)
             return false;
         if(Integer.parseInt(yearDialogTo.selectedYear) < Integer.parseInt(yearDialogFrom.selectedYear))
             return false;
+        return true;*/
         return true;
     }
 

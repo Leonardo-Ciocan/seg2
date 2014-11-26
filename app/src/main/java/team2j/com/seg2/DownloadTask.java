@@ -22,6 +22,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,36 +38,33 @@ public class DownloadTask extends AsyncTask<String, Object, Object> {
 
     //the network operations are run in the background
     protected Object doInBackground(String... urls) {
-        DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
-        httpclient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36");
 
-        HttpPost httppost = new HttpPost(urls[0]);
-
-        InputStream inputStream = null;
-        String result = null;
         try {
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+            URL u = new URL(urls[0]);
+            HttpURLConnection c = (HttpURLConnection) u.openConnection();
+            c.setRequestMethod("GET");
+            c.setRequestProperty("Content-length", "0");
+            c.setUseCaches(false);
+            c.setAllowUserInteraction(false);
+            c.connect();
+            int status = c.getResponseCode();
 
-            inputStream = entity.getContent();
-            // json is UTF-8 by default
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
-            StringBuilder sb = new StringBuilder();
-
-            String line = "";
-            while ((line = reader.readLine()) != null)
-            {
-                sb.append(line + "\n");
+            String result = null;
+            switch (status) {
+                case 200:
+                case 201:
+                    BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+                    result = sb.toString();
             }
-            result = sb.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        finally {
-            try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
-        }
 
-        ArrayList<DataPoint> population = Core.parsePopulationJson(result);
+
+            ArrayList<DataPoint> population = Core.parsePopulationJson(result);
 
 
         /*//this download is done
@@ -75,8 +74,10 @@ public class DownloadTask extends AsyncTask<String, Object, Object> {
             Core.listener.ready();
         }*/
 
-        listener.downloaded(population);
-        return population;
+            listener.downloaded(population);
+            return population;
+        }catch (Exception ex){}
+        return null;
     }
 
     protected void onPostExecute(JSONObject result) {

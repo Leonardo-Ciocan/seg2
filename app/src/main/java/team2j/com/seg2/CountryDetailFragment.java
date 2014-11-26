@@ -6,6 +6,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,11 +26,39 @@ public class CountryDetailFragment extends Fragment {
     CardView co2card;
     CardView urbanCard;
 
+    private Button fromButton;
+    private Button toButton;
+
+    private YearSelectorDialog yearDialogTo;
+    private YearSelectorDialog yearDialogFrom;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.country_detail_fragment, container, false);
+
+
+        fromButton = (Button)view.findViewById(R.id.fromButton);
+        toButton = (Button)view.findViewById(R.id.toButton);
+        yearDialogTo = new YearSelectorDialog(toButton,true);
+        yearDialogFrom = new YearSelectorDialog(fromButton,false);
+        fromButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                yearDialogFrom.show(getFragmentManager(), "from");
+            }
+        });
+
+        toButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                yearDialogTo.show(getFragmentManager(), "to");
+            }
+        });
+
+
+
         name = (TextView)view.findViewById(R.id.countryName);
         population = (TextView)view.findViewById(R.id.population);
         life = (TextView)view.findViewById(R.id.life);
