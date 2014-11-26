@@ -1,6 +1,7 @@
 package team2j.com.seg2;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,96 +39,41 @@ public class MainActivity extends Activity {
         getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.brandColor)));
         getActionBar().setTitle("SEG 2 Prototype");
 
-        countryButton = (Button)findViewById(R.id.countryButton);
-        indicatorButton = (Button)findViewById(R.id.indicatorButton);
-        searchButton = (Button)findViewById(R.id.searchButton);
-        fromButton = (Button)findViewById(R.id.yearFromButton);
-        toButton = (Button)findViewById(R.id.yearToButton);
+        CountriesFragment fragment = new CountriesFragment();
 
-        countrySelectorDialog = new CountrySelectorDialog();
-        indicatorSelectorDialog = new IndicatorSelectorDialog();
-        yearDialogTo = new YearSelectorDialog(toButton,true);
-        yearDialogFrom = new YearSelectorDialog(fromButton,false);
+        FrameLayout countriesFragmentHolder = (FrameLayout)findViewById(R.id.countriesFragmentHolder);
+        getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId() , fragment).commit();
 
 
-        indicatorSelectorDialog.setSelectionChangedListener(new SelectionChanged() {
+        final CountryDetailFragment detailFragment = new CountryDetailFragment();
+        FrameLayout countryDetailFragmentHolder = (FrameLayout)findViewById(R.id.countryDetailFragmentHolder);
+        getFragmentManager().beginTransaction().add(countryDetailFragmentHolder.getId() , detailFragment).commit();
+
+
+        final DataChartFragment chartFragment = new DataChartFragment();
+        FrameLayout chartHolder = (FrameLayout)findViewById(R.id.chartHolder);
+        getFragmentManager().beginTransaction().add(chartHolder.getId() , chartFragment).commit();
+
+
+        fragment.setListener(new CountriesFragment.CountrySelected() {
             @Override
-            public void onSelectionChanged(String newSelection) {
-                indicatorButton.setText("Graphing : " + newSelection);
-            }
-        });
-
-        countrySelectorDialog.setSelectionChangedListener(new SelectionChanged() {
-            @Override
-            public void onSelectionChanged(String newSelection) {
-                countryButton.setText("Countries: " + newSelection);
-            }
-        });
-
-        countryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                countrySelectorDialog.show(getFragmentManager(), "diag");
-            }
-        });
-
-        indicatorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                indicatorSelectorDialog.show(getFragmentManager(), "diag2");
+            public void selected(Country c) {
+                getFragmentManager().beginTransaction().hide(chartFragment).commit();
+                detailFragment.setCountry(c);
             }
         });
 
 
 
-
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        detailFragment.setListener(new CountryDetailFragment.IndicatorSelected() {
             @Override
-            public void onClick(View v) {
-                if(isValidInput()){
-                    Core.DataSets.clear();
-                    //we must aggregate data from multiple urls
-                    HashMap<String,String> urls = new HashMap<String, String>();
-                    //if more than one country is selected then
-                    if (countrySelectorDialog.selectedIDs.size() > 1) {
-                        //we iterate through the selected countries and create links for each country paired with the first indicator selector
-                        for (String country : countrySelectorDialog.selectedIDs) {
-                            urls.put(countrySelectorDialog.selectedCountries.get(countrySelectorDialog.selectedIDs.indexOf(country)),  "http://api.worldbank.org/countries/" + country + "/indicators/" + indicatorSelectorDialog.selectedIDs.get(0) + "?date=" + yearDialogFrom.selectedYear + ":" + yearDialogTo.selectedYear + "&format=json");
-                        }
-                    } else {
-                        //else if multiple indicators are selected , we will pair the same country with multiple indicators
-                        for (String indicator : indicatorSelectorDialog.selectedIDs) {
-                            urls.put(countrySelectorDialog.selectedCountries.get(0), "http://api.worldbank.org/countries/" + countrySelectorDialog.selectedIDs.get(0) + "/indicators/" + indicator + "?date=" + yearDialogFrom.selectedYear + ":" + yearDialogTo.selectedYear + "&format=json");
-                        }
-                    }
-
-                    //the numbers of urls is stored to know when all downloads are done
-                    Core.pending_downloads = urls.size();
-                    for (String key : urls.keySet()) {
-                        new DownloadTask(urls.get(key)).execute(urls.get(key),key);
-                    }
-
-                    Intent intent = new Intent(MainActivity.this, DataChartActivity.class);
-                    intent.putExtra("title" , TextUtils.join(", " , countrySelectorDialog.selectedCountries));
-                    intent.putExtra("description" , TextUtils.join(", " , indicatorSelectorDialog.selectedIndicators));
-                    startActivity(intent);
-                }
+            public void selected(ArrayList<DataPoint> points) {
+                getFragmentManager().beginTransaction().show(chartFragment).commit();
+                chartFragment.renderData(points);
             }
         });
 
-        fromButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                yearDialogFrom.show(getFragmentManager(), "from");
-            }
-        });
 
-        toButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                yearDialogTo.show(getFragmentManager(), "to");
-            }
-        });
 
 
     }

@@ -1,5 +1,9 @@
 package team2j.com.seg2;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,6 +19,66 @@ public class Core {
     }
     public interface OnDataSetsReady{
         void ready();
+    }
+
+    public static ArrayList<Country> countries = new ArrayList<Country>(){
+        {
+            add(new Country("United Kingdom" , "gb"));
+            add(new Country("Spain" , "es"));
+            add(new Country("France" , "fr"));
+        }
+    };
+
+    public static final int POPULATION_JSON = 1;
+
+    public static ArrayList<DataPoint> parsePopulationJson(String json){
+        ArrayList<DataPoint> history = new ArrayList<DataPoint>();
+        JSONArray jObject = null;
+        JSONArray object = null;
+        String url = null;
+        try {
+            jObject = new JSONArray(json);
+            object = jObject.getJSONArray(1);
+            int x = 0;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if(object == null) return null;
+        for(int x = 0; x < object.length();x++){
+            try {
+                JSONObject current = object.getJSONObject(x);
+                history.add(new DataPoint(current.getInt("date"),current.getInt("value")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return history;
+    }
+
+    public static ArrayList<DataPoint> parseLifeExpectancy(String json){
+        ArrayList<DataPoint> history = new ArrayList<DataPoint>();
+        JSONArray jObject = null;
+        JSONArray object = null;
+        String url = null;
+        try {
+            jObject = new JSONArray(json);
+            object = jObject.getJSONArray(1);
+            int x = 0;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if(object == null) return null;
+        for(int x = 0; x < object.length();x++){
+            try {
+                JSONObject current = object.getJSONObject(x);
+                history.add(new DataPoint(current.getInt("date"),current.getInt("value")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return history;
     }
 }
 
