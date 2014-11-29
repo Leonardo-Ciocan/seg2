@@ -5,7 +5,11 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,17 +19,24 @@ public class YearSelectorDialog extends DialogFragment {
 
     public ArrayList<String> Years = new ArrayList<String>();
     public String selectedYear = "";
+    Integer selectedFrom = 1960;
+    Integer selectedTo = 2014;
     ArrayList<String> years = new ArrayList<String>();
     int selectedYearId = 0;
 
     Button linkedButton;
 
+    boolean isOnLastYear;
     public YearSelectorDialog(){}
-    public YearSelectorDialog(Button linkedButton){
+    public YearSelectorDialog(Button linkedButton , boolean isOnLastYear){
         this.linkedButton = linkedButton;
         for(int x = 1960 ; x <= 2014;x++){
             years.add(String.valueOf(x));
         }
+        this.isOnLastYear = isOnLastYear;
+        //selectedYear = isOnLastYear ? "2014" : "1960";
+
+        selectedYearId = isOnLastYear ? years.size()-1:0;
     }
 
 
@@ -43,8 +54,22 @@ public class YearSelectorDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 selectedYear = arr[which];
+
+
+                    if( isOnLastYear ) { Core.selectedTo = Integer.parseInt(selectedYear);// String url = "http://api.worldbank.org/countries/" + Core.currentCountry.getId() + "/indicators/SP.POP.TOTL?date="+CountryDetailFragment.selectedFrom+":"+CountryDetailFragment.selectedTo+"&format=json";
+
+                    }else{ Core.selectedFrom = Integer.parseInt(selectedYear);
+                   }
                 selectedYearId = which;
-                linkedButton.setText(selectedYear);
+
+                linkedButton.setText((isOnLastYear ? "To " : "From " ) + selectedYear);
+
+                Core.countryDetailFragment.setCountry(Core.currentCountry);
+
+               /* if(Core.selectedFrom != null && Core.selectedTo !=null){
+                    BarData data = Core.chart.getData();
+                }*/
+
                 YearSelectorDialog.this.dismiss();
             }
         });
