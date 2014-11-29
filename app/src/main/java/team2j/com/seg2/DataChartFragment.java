@@ -30,6 +30,7 @@ import java.util.Random;
 
 
 public class DataChartFragment extends Fragment {
+
     View view;
 
 
@@ -54,6 +55,7 @@ public class DataChartFragment extends Fragment {
     }
 
     public void renderData(ArrayList<DataPoint> points){
+
         Log.d("Amount of points issssss ",String.valueOf(points.size()));
         Core.chart = (BarChart) view.findViewById(R.id.chart);
         //each DataPoint is converted to a BarEntry
@@ -67,10 +69,12 @@ public class DataChartFragment extends Fragment {
             }
         });
 
+
         int from = Core.selectedFrom == null ? 1960 : Core.selectedFrom;
         ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
         for(DataPoint point : points){
             entries.add(new BarEntry(point.getValue(),point.getYear() - from));
+
         }
         values.add(entries);
 
@@ -99,9 +103,11 @@ public class DataChartFragment extends Fragment {
         //all the X values we can have
         ArrayList<String> years = new ArrayList<String>();
 
+
         int start =Core.selectedFrom == null ? 1960 : Core.selectedFrom;
         int end = Core.selectedTo == null ? 2014 : Core.selectedTo;
         for(int x = start ; x <= end+1;x++){
+
             years.add(String.valueOf(x));
         }
 
@@ -110,17 +116,20 @@ public class DataChartFragment extends Fragment {
 
 
         //this disables the values label
+
       Core.  chart.setDrawYValues(false);
         //this centers the graph so there isn't blank space at the bottom
         Core.  chart.setStartAtZero(false);
         Core.  chart.setData(data);
         Core.  chart.notifyDataSetChanged();
 
+
         //this handler was called from the network thread so we must go back to the ui
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 //chart.invalidate();
+
                 Core.  chart.animateY(1400);
             }
         });

@@ -37,18 +37,23 @@ public class MainActivity extends Activity {
 
 
         final CountryDetailFragment detailFragment = new CountryDetailFragment();
+
         Core.countryDetailFragment = detailFragment;
 
         FrameLayout countryDetailFragmentHolder = (FrameLayout)findViewById(R.id.countryDetailFragmentHolder);
 
+        final DataChartFragment chartFragment = new DataChartFragment();
+        FrameLayout chartHolder = (FrameLayout)findViewById(R.id.chartHolder);
+        getFragmentManager().beginTransaction().add(chartHolder.getId() , chartFragment).commit();
+
+        getFragmentManager().beginTransaction().hide(chartFragment).commit();
+        getFragmentManager().beginTransaction().hide(detailFragment).commit();
 
 
         getFragmentManager().beginTransaction().add(countryDetailFragmentHolder.getId() , detailFragment).commit();
 
 
-        final DataChartFragment chartFragment = new DataChartFragment();
-        FrameLayout chartHolder = (FrameLayout)findViewById(R.id.chartHolder);
-        getFragmentManager().beginTransaction().add(chartHolder.getId() , chartFragment).commit();
+
 
         getFragmentManager().beginTransaction().hide(chartFragment).commit();
         getFragmentManager().beginTransaction().hide(detailFragment).commit();
@@ -69,6 +74,7 @@ public class MainActivity extends Activity {
 
 
 
+
         detailFragment.setListener(new CountryDetailFragment.IndicatorSelected() {
             @Override
             public void selected(ArrayList<DataPoint> points) {
@@ -83,14 +89,6 @@ public class MainActivity extends Activity {
     }
 
 
-    public boolean isValidInput(){
-        /*if(countrySelectorDialog.selectedIDs.size() == 0 || indicatorSelectorDialog.selectedIDs.size() ==0)
-            return false;
-        if(Integer.parseInt(yearDialogTo.selectedYear) < Integer.parseInt(yearDialogFrom.selectedYear))
-            return false;
-        return true;*/
-        return true;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

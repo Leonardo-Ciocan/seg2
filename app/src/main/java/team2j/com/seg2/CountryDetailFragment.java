@@ -57,14 +57,8 @@ public class CountryDetailFragment extends Fragment {
             public void onClick(View v) {
                 yearDialogTo.show(getFragmentManager(), "to");
                   setCountry(Core.currentCountry);
-
-
             }
         });
-
-
-
-
         name = (TextView)view.findViewById(R.id.countryName);
         population = (TextView)view.findViewById(R.id.population);
         life = (TextView)view.findViewById(R.id.life);
@@ -116,11 +110,11 @@ public class CountryDetailFragment extends Fragment {
 
 
 
-
     public  void setCountry(Country c){
         name.setText(c.getName());
         Core.currentCountry = c;
          String url = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.POP.TOTL?date="+Core.selectedFrom+":"+Core.selectedTo+"&format=json";
+
         DownloadTask task = new DownloadTask(0);
         task.setListener( new DownloadTask.DataDownloaded() {
             @Override
@@ -137,7 +131,9 @@ public class CountryDetailFragment extends Fragment {
         });
         task.execute(url);
 
+
          String lifeUrl =  "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.DYN.LE00.IN?date="+Core.selectedFrom+":"+Core.selectedTo+"&format=json";
+
         DownloadTask lifeTask = new DownloadTask(0);
         lifeTask.setListener( new DownloadTask.DataDownloaded() {
             @Override
@@ -155,7 +151,9 @@ public class CountryDetailFragment extends Fragment {
         lifeTask.execute(lifeUrl);
 
 
+
         final String co2Url = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/EN.ATM.CO2E.KT?date="+Core.selectedFrom+":"+Core.selectedTo+"&format=json";
+
         DownloadTask co2task = new DownloadTask(0);
         co2task.setListener( new DownloadTask.DataDownloaded() {
             @Override
@@ -171,6 +169,7 @@ public class CountryDetailFragment extends Fragment {
             }
         });
         co2task.execute(co2Url);
+
 
         final String urbalUrl = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.URB.TOTL.IN.ZS?date="+Core.selectedFrom+":"+Core.selectedTo+"&format=json";
         DownloadTask urbanTask = new DownloadTask(0);
@@ -196,14 +195,6 @@ public class CountryDetailFragment extends Fragment {
     }
     public interface IndicatorSelected {
         void selected(ArrayList<DataPoint> points);
-    }
-
-    YearSelected yearListener;
-    public void setListener(YearSelected listener){
-        this.yearListener = listener;
-    }
-    public interface YearSelected{
-        void yearSelectedUpdate();
     }
 
 }

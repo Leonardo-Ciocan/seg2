@@ -1,7 +1,6 @@
 package team2j.com.seg2;
 
 import com.github.mikephil.charting.charts.BarChart;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
