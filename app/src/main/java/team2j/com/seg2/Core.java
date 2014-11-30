@@ -26,8 +26,61 @@ public class Core {
             add(new Country("United Kingdom" , "gb"));
             add(new Country("Spain" , "es"));
             add(new Country("France" , "fr"));
-            add(new Country("Iraq" , "irq"));
             add(new Country("Italy" , "it"));
+            add(new Country("Germany","de"));
+            add(new Country("Russia","ru"));
+            add(new Country("Ukraine","ua"));
+            add(new Country("Finland","fi"));
+            add(new Country("Sweden","se"));
+            add(new Country("Norway","no"));
+            add(new Country("Denmark","dk"));
+            add(new Country("Latvia","lv"));
+            add(new Country("Lithuania","lt"));
+            add(new Country("Belarus","by"));
+            add(new Country("Moldova","md"));
+            add(new Country("Poland","pl"));
+            add(new Country("Czech","cz"));
+            add(new Country("Slovakia","sk"));
+            add(new Country("Hungary","hu"));
+            add(new Country("Austria","at"));
+            add(new Country("Switzerland","ch"));
+           // add(new Country("Liechtenstein","li"));
+            add(new Country("Ireland","ie"));
+            add(new Country("Holland","nl"));
+            add(new Country("Belgium","be"));
+            add(new Country("Luxembourg","lu"));
+            //add(new Country("Monaco","mc"));
+            add(new Country("Romania","ro"));
+            add(new Country("Bulgaria","bg"));
+            add(new Country("Macedonia","mk"));
+            add(new Country("Albania","al"));
+            add(new Country("Greece","gr"));
+            add(new Country("Slovenia","si"));
+            add(new Country("Croatia","hr"));
+            add(new Country("Bosnia-Herzegovina","ba"));
+            //add(new Country("SanMarino","sm"));
+            add(new Country("Turkey","tr"));
+            add(new Country("Portugal","pt"));
+            add(new Country("Andorra","ad"));
+            add(new Country("Serbia","rs"));
+
+
+
+
+
+
+//            add(new Country("Vietnam","vn"));
+//            add(new Country("China","cn"));
+//            add(new Country("United States","us"));
+//            add(new Country("Japan","jp"));
+//            add(new Country("Korea","kr"));
+//            add(new Country("Singapore","sg"));
+//            add(new Country("Bangladesh","bd"));
+//            add(new Country("Iraq" , "irq"));
+
+
+
+
         }
     };
 
