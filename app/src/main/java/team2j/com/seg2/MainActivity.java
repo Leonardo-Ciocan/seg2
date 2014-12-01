@@ -1,6 +1,7 @@
 package team2j.com.seg2;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -36,9 +37,10 @@ public class MainActivity extends Activity {
 
 
         final CountryDetailFragment detailFragment = new CountryDetailFragment();
-        FrameLayout countryDetailFragmentHolder = (FrameLayout)findViewById(R.id.countryDetailFragmentHolder);
-        getFragmentManager().beginTransaction().add(countryDetailFragmentHolder.getId() , detailFragment).commit();
 
+        Core.countryDetailFragment = detailFragment;
+
+        FrameLayout countryDetailFragmentHolder = (FrameLayout)findViewById(R.id.countryDetailFragmentHolder);
 
         final DataChartFragment chartFragment = new DataChartFragment();
         FrameLayout chartHolder = (FrameLayout)findViewById(R.id.chartHolder);
@@ -48,22 +50,35 @@ public class MainActivity extends Activity {
         getFragmentManager().beginTransaction().hide(detailFragment).commit();
 
 
+        getFragmentManager().beginTransaction().add(countryDetailFragmentHolder.getId() , detailFragment).commit();
+
+
+
+
+        getFragmentManager().beginTransaction().hide(chartFragment).commit();
+        getFragmentManager().beginTransaction().hide(detailFragment).commit();
+
+
+
         fragment.setListener(new CountriesFragment.CountrySelected() {
             @Override
             public void selected(Country c) {
-                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show,R.anim.hide).hide(chartFragment).commit();
-                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show,R.anim.hide).show(detailFragment).commit();
-
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).hide(chartFragment).commit();
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(detailFragment).commit();
+                Core.currentCountry = c;
                 detailFragment.setCountry(c);
+
             }
         });
+
+
 
 
 
         detailFragment.setListener(new CountryDetailFragment.IndicatorSelected() {
             @Override
             public void selected(ArrayList<DataPoint> points) {
-                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show,R.anim.hide).show(chartFragment).commit();
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
                 chartFragment.renderData(points);
             }
         });
@@ -73,14 +88,7 @@ public class MainActivity extends Activity {
 
     }
 
-    public boolean isValidInput(){
-        /*if(countrySelectorDialog.selectedIDs.size() == 0 || indicatorSelectorDialog.selectedIDs.size() ==0)
-            return false;
-        if(Integer.parseInt(yearDialogTo.selectedYear) < Integer.parseInt(yearDialogFrom.selectedYear))
-            return false;
-        return true;*/
-        return true;
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

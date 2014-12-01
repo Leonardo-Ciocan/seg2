@@ -47,6 +47,8 @@ public class CountryDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 yearDialogFrom.show(getFragmentManager(), "from");
+                setCountry(Core.currentCountry);
+
             }
         });
 
@@ -54,11 +56,9 @@ public class CountryDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 yearDialogTo.show(getFragmentManager(), "to");
+                  setCountry(Core.currentCountry);
             }
         });
-
-
-
         name = (TextView)view.findViewById(R.id.countryName);
         population = (TextView)view.findViewById(R.id.population);
         life = (TextView)view.findViewById(R.id.life);
@@ -101,6 +101,7 @@ public class CountryDetailFragment extends Fragment {
         return view;
     }
 
+
     ArrayList<DataPoint> populationPoints;
     ArrayList<DataPoint> lifePoints;
     ArrayList<DataPoint> co2Points;
@@ -108,9 +109,12 @@ public class CountryDetailFragment extends Fragment {
 
 
 
-    public void setCountry(Country c){
+
+    public  void setCountry(Country c){
         name.setText(c.getName());
-        final String url = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.POP.TOTL?date=1960:2014&format=json";
+        Core.currentCountry = c;
+         String url = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.POP.TOTL?date="+Core.selectedFrom+":"+Core.selectedTo+"&format=json";
+
         DownloadTask task = new DownloadTask(0);
         task.setListener( new DownloadTask.DataDownloaded() {
             @Override
@@ -127,7 +131,9 @@ public class CountryDetailFragment extends Fragment {
         });
         task.execute(url);
 
-        final String lifeUrl = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.DYN.LE00.IN?date=1960:2014&format=json";
+
+         String lifeUrl =  "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.DYN.LE00.IN?date="+Core.selectedFrom+":"+Core.selectedTo+"&format=json";
+
         DownloadTask lifeTask = new DownloadTask(0);
         lifeTask.setListener( new DownloadTask.DataDownloaded() {
             @Override
@@ -145,7 +151,9 @@ public class CountryDetailFragment extends Fragment {
         lifeTask.execute(lifeUrl);
 
 
-        final String co2Url = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/EN.ATM.CO2E.KT?date=1960:2014&format=json";
+
+        final String co2Url = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/EN.ATM.CO2E.KT?date="+Core.selectedFrom+":"+Core.selectedTo+"&format=json";
+
         DownloadTask co2task = new DownloadTask(0);
         co2task.setListener( new DownloadTask.DataDownloaded() {
             @Override
@@ -162,7 +170,8 @@ public class CountryDetailFragment extends Fragment {
         });
         co2task.execute(co2Url);
 
-        final String urbalUrl = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.URB.TOTL.IN.ZS?date=1960:2014&format=json";
+
+        final String urbalUrl = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.URB.TOTL.IN.ZS?date="+Core.selectedFrom+":"+Core.selectedTo+"&format=json";
         DownloadTask urbanTask = new DownloadTask(0);
         urbanTask.setListener( new DownloadTask.DataDownloaded() {
             @Override
@@ -187,4 +196,5 @@ public class CountryDetailFragment extends Fragment {
     public interface IndicatorSelected {
         void selected(ArrayList<DataPoint> points);
     }
+
 }

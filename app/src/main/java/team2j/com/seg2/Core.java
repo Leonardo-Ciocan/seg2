@@ -1,5 +1,6 @@
 package team2j.com.seg2;
 
+import com.github.mikephil.charting.charts.BarChart;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,6 +12,12 @@ public class Core {
     // a list of data points is a line that represents a trend , so this is a list of lines
     public static ArrayList<DataSet> DataSets = new ArrayList<DataSet>();
     public static int pending_downloads = 0;
+    public static BarChart chart;
+    public static Country  currentCountry;
+    public static CountryDetailFragment countryDetailFragment;
+
+    public static Integer selectedFrom = 1960;
+    public static Integer selectedTo = 2014;
 
     //this is triggered when all downloads are done
     public static OnDataSetsReady listener;
