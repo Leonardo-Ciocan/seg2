@@ -8,11 +8,12 @@
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="United Kingdom"
+        android:text="Loading..."
         android:textSize="15pt"
         android:textColor="#000"
         android:layout_gravity="center_horizontal"/>
     <Button
+        android:id="@+id/compareButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Compare to another country"/>
@@ -72,7 +73,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="55885885"
+                        android:text=""
                         android:textSize="10pt"
                         android:textColor="#9a000000"
                         android:layout_gravity="center_horizontal"/>
@@ -102,7 +103,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="55"
+                        android:text=""
                         android:textSize="10pt"
                         android:textColor="#9a000000"
                         android:layout_gravity="center_horizontal"/>
@@ -141,7 +142,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="55"
+                        android:text=""
                         android:textSize="10pt"
                         android:textColor="#9a000000"
                         android:layout_gravity="center_horizontal"/>
@@ -162,7 +163,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Urband Population"
+                        android:text="Urban Population"
                         android:textSize="10pt"
                         android:textColor="#5a000000"
                         android:layout_gravity="center_horizontal"/>
@@ -171,7 +172,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="55"
+                        android:text=""
                         android:textSize="10pt"
                         android:textColor="#9a000000"
                         android:layout_gravity="center_horizontal"/>
