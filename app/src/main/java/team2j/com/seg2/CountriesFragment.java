@@ -36,7 +36,7 @@ public class CountriesFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                
+
             }
         });
 
