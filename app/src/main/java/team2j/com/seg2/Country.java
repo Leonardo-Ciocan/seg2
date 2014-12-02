@@ -1,8 +1,20 @@
 package team2j.com.seg2;
 
+import java.util.ArrayList;
+
 public class Country {
     String name;
     String id;
+    public ArrayList<ArrayList<DataPoint>> data = new ArrayList<ArrayList<DataPoint>>(){
+        {
+            add(new ArrayList<DataPoint>());
+            add(new ArrayList<DataPoint>());
+            add(new ArrayList<DataPoint>());
+            add(new ArrayList<DataPoint>());
+        }
+    };
+
+    ArrayList<DataPoint> urban;
 
     public String getName() {
         return name;
@@ -25,4 +37,6 @@ public class Country {
         this.name = name;
         this.id = id;
     }
+
+
 }

@@ -44,9 +44,9 @@ public class DataChartFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
 
-       Core. chart = (BarChart) view.findViewById(R.id.chart);
+       //Core. chart = (BarChart) view.findViewById(R.id.chart);
 
-       Core. chart.setNoDataText("Drawing data , please wait.");
+//       Core. chart.setNoDataText("Drawing data , please wait.");
 
 
 
@@ -54,10 +54,11 @@ public class DataChartFragment extends Fragment {
 
     }
 
-    public void renderData(ArrayList<DataPoint> points){
+    public void renderData(ArrayList<DataPoint> points , ArrayList<DataPoint> comparingTo){
 
-        Log.d("Amount of points issssss ",String.valueOf(points.size()));
-        Core.chart = (BarChart) view.findViewById(R.id.chart);
+
+        final BarChart chart = (BarChart) view.findViewById(R.id.chart);
+
         //each DataPoint is converted to a BarEntry
         ArrayList<ArrayList<BarEntry>> values = new ArrayList<ArrayList<BarEntry>>();
 
@@ -78,6 +79,24 @@ public class DataChartFragment extends Fragment {
         }
         values.add(entries);
 
+        ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
+
+        if(comparingTo!=null){
+            Collections.sort(comparingTo, new Comparator<DataPoint>() {
+                @Override
+                public int compare(DataPoint lhs, DataPoint rhs) {
+                    return lhs.getYear() > rhs.getYear() ? 1 : 0;
+                }
+            });
+
+
+            for(DataPoint point : comparingTo){
+                entries1.add(new BarEntry(point.getValue(),point.getYear() - from));
+
+            }
+            values.add(entries1);
+        }
+
 
         Random rnd = new Random();
         boolean first = true;
@@ -85,10 +104,11 @@ public class DataChartFragment extends Fragment {
         //this needs to be updated :|
         ArrayList<BarDataSet> BarDataSets = new ArrayList<BarDataSet>();
         for(ArrayList<BarEntry> entryArrayList : values){
-            BarDataSet dataSet = new BarDataSet(entryArrayList , "");
+            BarDataSet dataSet = new BarDataSet(entryArrayList  , ""+rnd.nextInt());
             n++;
             dataSet.setColor(first ? getResources().getColor(R.color.brandColor) : Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)) );
-            dataSet.setHighLightColor(Color.BLACK);
+
+
             //dataSet.setCircleColor(dataSet.getColor());
             first = false;
             //dataSet.setLineWidth(2.5f);
@@ -117,11 +137,12 @@ public class DataChartFragment extends Fragment {
 
         //this disables the values label
 
-      Core.  chart.setDrawYValues(false);
+       chart.set3DEnabled(true);
+        chart.setDrawYValues(false);
         //this centers the graph so there isn't blank space at the bottom
-        Core.  chart.setStartAtZero(false);
-        Core.  chart.setData(data);
-        Core.  chart.notifyDataSetChanged();
+        chart.setStartAtZero(false);
+        chart.setData(data);
+        chart.invalidate();
 
 
         //this handler was called from the network thread so we must go back to the ui
@@ -130,7 +151,7 @@ public class DataChartFragment extends Fragment {
             public void run() {
                 //chart.invalidate();
 
-                Core.  chart.animateY(1400);
+                chart.animateY(1400);
             }
         });
 

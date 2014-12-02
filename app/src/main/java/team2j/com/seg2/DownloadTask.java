@@ -76,7 +76,9 @@ public class DownloadTask extends AsyncTask<String, Object, Object> {
 
             listener.downloaded(population);
             return population;
-        }catch (Exception ex){}
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
         return null;
     }
 

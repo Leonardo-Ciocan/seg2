@@ -12,12 +12,19 @@ public class Core {
     // a list of data points is a line that represents a trend , so this is a list of lines
     public static ArrayList<DataSet> DataSets = new ArrayList<DataSet>();
     public static int pending_downloads = 0;
-    public static BarChart chart;
+    //public static BarChart chart;
     public static Country  currentCountry;
     public static CountryDetailFragment countryDetailFragment;
 
     public static Integer selectedFrom = 1960;
     public static Integer selectedTo = 2014;
+
+    public Country countryToCompare;
+
+    public static int CO2 = 0;
+    public static int LIFE = 1;
+    public static int POPULATION = 2;
+    public static int URBAN = 3;
 
     //this is triggered when all downloads are done
     public static OnDataSetsReady listener;
@@ -77,7 +84,7 @@ public class Core {
 
 
 //            add(new Country("Vietnam","vn"));
-//            add(new Country("China","cn"));
+            add(new Country("China","cn"));
 //            add(new Country("United States","us"));
 //            add(new Country("Japan","jp"));
 //            add(new Country("Korea","kr"));

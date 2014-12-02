@@ -77,9 +77,9 @@ public class MainActivity extends Activity {
 
         detailFragment.setListener(new CountryDetailFragment.IndicatorSelected() {
             @Override
-            public void selected(ArrayList<DataPoint> points) {
+            public void selected(ArrayList<DataPoint> points , int type) {
                 getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
-                chartFragment.renderData(points);
+                chartFragment.renderData(points,null);
             }
         });
 

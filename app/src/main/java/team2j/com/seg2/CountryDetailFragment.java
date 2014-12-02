@@ -1,8 +1,11 @@
 package team2j.com.seg2;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CountryDetailFragment extends Fragment {
+
+
+
 
     TextView name;
     TextView population;
@@ -33,11 +39,12 @@ public class CountryDetailFragment extends Fragment {
     private YearSelectorDialog yearDialogFrom;
 
 
+    boolean loaded = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.country_detail_fragment, container, false);
-
+        //view.setBackgroundColor(Color.RED);
 
         fromButton = (Button)view.findViewById(R.id.fromButton);
         toButton = (Button)view.findViewById(R.id.toButton);
@@ -69,7 +76,7 @@ public class CountryDetailFragment extends Fragment {
         populationCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.selected(populationPoints);
+                listener.selected(populationPoints, Core.POPULATION);
             }
         });
 
@@ -77,7 +84,7 @@ public class CountryDetailFragment extends Fragment {
         lifeCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.selected(lifePoints);
+                listener.selected(lifePoints, Core.LIFE);
             }
         });
 
@@ -85,7 +92,7 @@ public class CountryDetailFragment extends Fragment {
         co2card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.selected(co2Points);
+                listener.selected(co2Points, Core.CO2);
             }
         });
 
@@ -93,11 +100,20 @@ public class CountryDetailFragment extends Fragment {
         urbanCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.selected(urbanPoints);
+                listener.selected(urbanPoints, Core.URBAN);
             }
         });
 
+        Button compareButton = (Button)view.findViewById(R.id.compareButton);
+        compareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity() , CompareActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
 
+        loaded = true;
         return view;
     }
 
@@ -109,9 +125,10 @@ public class CountryDetailFragment extends Fragment {
 
 
 
-
+    Country country;
     public  void setCountry(Country c){
-        name.setText(c.getName());
+        country = c;
+
         Core.currentCountry = c;
          String url = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.POP.TOTL?date="+Core.selectedFrom+":"+Core.selectedTo+"&format=json";
 
@@ -121,12 +138,15 @@ public class CountryDetailFragment extends Fragment {
             public void downloaded(Object c) {
                 final ArrayList<DataPoint> points = (ArrayList<DataPoint>)c;
                 populationPoints = points;
+                country.data.set(Core.POPULATION , points);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         population.setText((points.get(points.size() - 1)).getValue().toString());
+                        name.setText(country.getName());
                     }
                 });
+
             }
         });
         task.execute(url);
@@ -138,7 +158,10 @@ public class CountryDetailFragment extends Fragment {
         lifeTask.setListener( new DownloadTask.DataDownloaded() {
             @Override
             public void downloaded(Object c) {
+
                 final ArrayList<DataPoint> points = (ArrayList<DataPoint>)c;
+                country.data.set(Core.LIFE, points);
+
                 lifePoints = points;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -158,7 +181,10 @@ public class CountryDetailFragment extends Fragment {
         co2task.setListener( new DownloadTask.DataDownloaded() {
             @Override
             public void downloaded(Object c) {
+
                 final ArrayList<DataPoint> points = (ArrayList<DataPoint>)c;
+                country.data.set(Core.CO2, points);
+
                 co2Points = points;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -177,6 +203,8 @@ public class CountryDetailFragment extends Fragment {
             @Override
             public void downloaded(Object c) {
                 final ArrayList<DataPoint> points = (ArrayList<DataPoint>)c;
+                country.data.set(Core.URBAN, points);
+
                 urbanPoints = points;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -194,7 +222,7 @@ public class CountryDetailFragment extends Fragment {
         this.listener = listener;
     }
     public interface IndicatorSelected {
-        void selected(ArrayList<DataPoint> points);
+        void selected(ArrayList<DataPoint> points,int type);
     }
 
 }
