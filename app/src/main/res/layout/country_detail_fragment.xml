@@ -5,11 +5,12 @@
     android:layout_height="match_parent">
     <TextView
         android:id="@+id/countryName"
+        android:fontFamily="sans-serif-light"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Loading..."
-        android:textSize="15pt"
+        android:textSize="13pt"
         android:textColor="#000"
         android:layout_gravity="center_horizontal"/>
     <Button

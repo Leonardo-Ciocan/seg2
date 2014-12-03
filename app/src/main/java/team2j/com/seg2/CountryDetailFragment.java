@@ -34,11 +34,12 @@ public class CountryDetailFragment extends Fragment {
 
     private Button fromButton;
     private Button toButton;
+    Button compareButton;
 
     private YearSelectorDialog yearDialogTo;
     private YearSelectorDialog yearDialogFrom;
 
-
+    boolean hide= false;
     boolean loaded = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,7 +105,7 @@ public class CountryDetailFragment extends Fragment {
             }
         });
 
-        Button compareButton = (Button)view.findViewById(R.id.compareButton);
+        compareButton = (Button)view.findViewById(R.id.compareButton);
         compareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +114,11 @@ public class CountryDetailFragment extends Fragment {
             }
         });
 
+        if(hide){
+            fromButton.setVisibility(View.GONE);
+            toButton.setVisibility(View.GONE);
+            compareButton.setVisibility(View.GONE);
+        }
         loaded = true;
         return view;
     }
@@ -129,7 +135,7 @@ public class CountryDetailFragment extends Fragment {
     public  void setCountry(Country c){
         country = c;
 
-        Core.currentCountry = c;
+        //Core.currentCountry = c;
          String url = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.POP.TOTL?date="+Core.selectedFrom+":"+Core.selectedTo+"&format=json";
 
         DownloadTask task = new DownloadTask(0);
@@ -223,6 +229,10 @@ public class CountryDetailFragment extends Fragment {
     }
     public interface IndicatorSelected {
         void selected(ArrayList<DataPoint> points,int type);
+    }
+
+    public void hideButtons(){
+        hide = true;
     }
 
 }

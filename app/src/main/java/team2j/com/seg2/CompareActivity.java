@@ -23,6 +23,17 @@ import java.util.HashMap;
 public class CompareActivity extends Activity {
 
 
+    private CountryDetailFragment detailFragment;
+    private CountryDetailFragment detailFragment1;
+    private ComparasionChartFragment chartFragment;
+    private FrameLayout chartHolder;
+    private FrameLayout countryDetailFragmentHolder1;
+    private FrameLayout countriesFragmentHolder;
+    private FrameLayout countryDetailFragmentHolder;
+    private CountriesFragment fragment;
+
+    boolean shouldGoBack = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,44 +44,68 @@ public class CompareActivity extends Activity {
         FrameLayout detailHolder1 = (FrameLayout)findViewById(R.id.countryDetailFragmentHolder);
         getFragmentManager().beginTransaction().add(detailHolder1.getId() , fragment).commit();*/
 
+        detailFragment1 = new CountryDetailFragment();
 
-        final CountryDetailFragment detailFragment = new CountryDetailFragment();
+        countriesFragmentHolder = (FrameLayout)findViewById(R.id.secondCountryHolder);
+
+        countryDetailFragmentHolder1 = (FrameLayout)findViewById(R.id.countryDetailFragmentHolderFirst);
+        getFragmentManager().beginTransaction().add(countryDetailFragmentHolder1.getId(), detailFragment1).commit();
+        detailFragment1.setCountry(Core.currentCountry);
+        detailFragment1.hideButtons();
+
+        detailFragment = new CountryDetailFragment();
+
+        countryDetailFragmentHolder = (FrameLayout)findViewById(R.id.countryDetailFragmentHolder);
+
+        getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId(), detailFragment).commit();
+        detailFragment.hideButtons();
+
+        chartFragment = new ComparasionChartFragment();
 
 
-        FrameLayout countryDetailFragmentHolder = (FrameLayout)findViewById(R.id.countryDetailFragmentHolder);
-
-        getFragmentManager().beginTransaction().add(countryDetailFragmentHolder.getId(), detailFragment).commit();
-
-        final DataChartFragment chartFragment = new DataChartFragment();
-
-
-        final FrameLayout chartHolder = (FrameLayout)findViewById(R.id.chartHolder);
+        chartHolder = (FrameLayout)findViewById(R.id.chartHolder);
 
         getFragmentManager().beginTransaction().add(chartHolder.getId(), chartFragment).commit();
 
 
+        getFragmentManager().beginTransaction().hide(chartFragment).commit();
+        getFragmentManager().beginTransaction().hide(detailFragment).commit();
 
 
+        fragment = new CountriesFragment();
 
-        CountriesFragment fragment = new CountriesFragment();
-
-        FrameLayout countriesFragmentHolder = (FrameLayout)findViewById(R.id.secondCountryHolder);
         getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId() , fragment).commit();
 
         fragment.setListener(new CountriesFragment.CountrySelected() {
             @Override
             public void selected(Country c) {
                 detailFragment.setCountry(c);
+                shouldGoBack = false;
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).hide(chartFragment).commit();
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).hide(fragment).commit();
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(detailFragment).commit();
             }
         });
 
         detailFragment.setListener(new CountryDetailFragment.IndicatorSelected() {
             @Override
-            public void selected(ArrayList<DataPoint> points ,int type) {
-                chartFragment.renderData(Core.currentCountry.data.get(type) , points);
+            public void selected(ArrayList<DataPoint> points, int type) {
+                chartFragment.renderData(Core.currentCountry.data.get(type), points);
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
+
+
             }
         });
+    }
 
-
+    @Override
+    public void onBackPressed() {
+        if (!shouldGoBack) {
+            getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(fragment).commit();
+            getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).hide(detailFragment).commit();
+            shouldGoBack = true;
+        } else {
+            super.onBackPressed();
+        }
     }
 }

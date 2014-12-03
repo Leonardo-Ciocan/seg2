@@ -14,7 +14,6 @@ public class Country {
         }
     };
 
-    ArrayList<DataPoint> urban;
 
     public String getName() {
         return name;

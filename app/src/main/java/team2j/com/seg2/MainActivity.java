@@ -79,6 +79,11 @@ public class MainActivity extends Activity {
             @Override
             public void selected(ArrayList<DataPoint> points , int type) {
                 getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
+                switch (type){
+                    case 2:
+                        chartFragment.chart.setDescription("Population");
+                        break;
+                }
                 chartFragment.renderData(points,null);
             }
         });

@@ -1,51 +1,38 @@
 package team2j.com.seg2;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.utils.FillFormatter;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Random;
 
-
-public class DataChartFragment extends Fragment {
-
+public class ComparasionChartFragment extends Fragment {
     View view;
-    BarChart chart;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.chart_fragment, container, false);
+        View view =  inflater.inflate(R.layout.compare_chart_fragment, container, false);
 
         this.view = view;
         super.onCreate(savedInstanceState);
 
 
-       //Core. chart = (BarChart) view.findViewById(R.id.chart);
+        //Core. chart = (LineChart) view.findViewById(R.id.chart);
 
 //       Core. chart.setNoDataText("Drawing data , please wait.");
 
@@ -59,10 +46,10 @@ public class DataChartFragment extends Fragment {
 
         Random rnd = new Random();
 
-        chart = (BarChart) view.findViewById(R.id.chart);
+        final LineChart chart = (LineChart) view.findViewById(R.id.chart);
 
-        //each DataPoint is converted to a BarEntry
-        ArrayList<ArrayList<BarEntry>> values = new ArrayList<ArrayList<BarEntry>>();
+        //each DataPoint is converted to a LineEntry
+        ArrayList<ArrayList<Entry>> values = new ArrayList<ArrayList<Entry>>();
 
         //data must be sorted by year
         Collections.sort(points, new Comparator<DataPoint>() {
@@ -74,16 +61,14 @@ public class DataChartFragment extends Fragment {
 
 
         int from = Core.selectedFrom == null ? 1960 : Core.selectedFrom;
-        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+        ArrayList<Entry> entries = new ArrayList<Entry>();
         for(DataPoint point : points){
-            entries.add(new BarEntry(point.getValue(),point.getYear() - from));
-
+            entries.add(new Entry(point.getValue(),point.getYear() - from));
         }
         values.add(entries);
 
-        ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
+        ArrayList<Entry> entries1 = new ArrayList<Entry>();
 
-        if(comparingTo!=null){
             Collections.sort(comparingTo, new Comparator<DataPoint>() {
                 @Override
                 public int compare(DataPoint lhs, DataPoint rhs) {
@@ -93,21 +78,12 @@ public class DataChartFragment extends Fragment {
 
 
             for(DataPoint point : comparingTo){
-                entries1.add(new BarEntry(point.getValue(),point.getYear() - from));
+                entries1.add(new Entry(point.getValue(),point.getYear() - from));
             }
             values.add(entries1);
 
-            values.get(0).clear();
 
-            for(int x = 0; x< 40;x++){
-                values.get(0).add(new BarEntry(Math.abs(rnd.nextInt()),x));
-            }
-
-            values.get(1).clear();
-            for(int x = 0; x< 40;x++){
-                values.get(1).add(new BarEntry(Math.abs(rnd.nextInt()),x));
-            }
-        }
+        
 
 
 
@@ -115,22 +91,22 @@ public class DataChartFragment extends Fragment {
         boolean first = true;
         int n = 0;
         //this needs to be updated :|
-        ArrayList<BarDataSet> BarDataSets = new ArrayList<BarDataSet>();
-        for(ArrayList<BarEntry> entryArrayList : values){
-            BarDataSet dataSet = new BarDataSet(entryArrayList  , ""+rnd.nextInt());
+        ArrayList<LineDataSet> LineDataSets = new ArrayList<LineDataSet>();
+        for(ArrayList<Entry> entryArrayList : values){
+            LineDataSet dataSet = new LineDataSet(entryArrayList  , ""+rnd.nextInt());
             n++;
             dataSet.setColor(first ? getResources().getColor(R.color.brandColor) : Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)) );
 
 
-            //dataSet.setCircleColor(dataSet.getColor());
+            dataSet.setCircleColor(dataSet.getColor());
             first = false;
-            //dataSet.setLineWidth(2.5f);
+            dataSet.setLineWidth(2.5f);
 
-            //dataSet.setCircleSize(1f);
+            dataSet.setCircleSize(1f);
             //dataSet.setDrawCubic(true);
             // dataSet.setCubicIntensity(10);
 
-            BarDataSets.add(dataSet);
+            LineDataSets.add(dataSet);
         }
 
         //all the X values we can have
@@ -144,13 +120,12 @@ public class DataChartFragment extends Fragment {
             years.add(String.valueOf(x));
         }
 
-        BarData data = new BarData(years ,  BarDataSets);
+        LineData data = new LineData(years ,  LineDataSets);
 
 
 
         //this disables the values label
 
-       chart.set3DEnabled(true);
         chart.setDrawYValues(false);
         //this centers the graph so there isn't blank space at the bottom
         chart.setStartAtZero(false);
@@ -163,7 +138,6 @@ public class DataChartFragment extends Fragment {
             @Override
             public void run() {
                 //chart.invalidate();
-
                 chart.animateY(1400);
             }
         });
