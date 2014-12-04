@@ -41,6 +41,12 @@ public class CountryDetailFragment extends Fragment {
 
     boolean hide= false;
     boolean loaded = false;
+    private ChartCardView test;
+    private ChartCardView populationGraph;
+    private ChartCardView co2Graph;
+    private ChartCardView urbGraph;
+    private ChartCardView lifeGraph;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,11 +79,18 @@ public class CountryDetailFragment extends Fragment {
         co2label = (TextView)view.findViewById(R.id.co2label);
         urbanLabel = (TextView)view.findViewById(R.id.urbanlabel);
 
+
+        populationGraph = (ChartCardView)view.findViewById(R.id.population_graph);
+        co2Graph = (ChartCardView)view.findViewById(R.id.co2_graph);
+        urbGraph = (ChartCardView)view.findViewById(R.id.urban_graph);
+        lifeGraph = (ChartCardView)view.findViewById(R.id.life_graph);
+
         populationCard = (CardView)view.findViewById(R.id.populationCard);
         populationCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.selected(populationPoints, Core.POPULATION);
+
             }
         });
 
@@ -114,6 +127,10 @@ public class CountryDetailFragment extends Fragment {
             }
         });
 
+
+
+
+
         if(hide){
             fromButton.setVisibility(View.GONE);
             toButton.setVisibility(View.GONE);
@@ -143,6 +160,7 @@ public class CountryDetailFragment extends Fragment {
             @Override
             public void downloaded(Object c) {
                 final ArrayList<DataPoint> points = (ArrayList<DataPoint>)c;
+
                 populationPoints = points;
                 country.data.set(Core.POPULATION , points);
                 getActivity().runOnUiThread(new Runnable() {
@@ -150,6 +168,7 @@ public class CountryDetailFragment extends Fragment {
                     public void run() {
                         population.setText((points.get(points.size() - 1)).getValue().toString());
                         name.setText(country.getName());
+                        populationGraph.drawData(points);
                     }
                 });
 
@@ -173,6 +192,8 @@ public class CountryDetailFragment extends Fragment {
                     @Override
                     public void run() {
                         life.setText((points.get(points.size() - 1)).getValue().toString());
+                        lifeGraph.drawData(points);
+
                     }
                 });
             }
@@ -196,6 +217,8 @@ public class CountryDetailFragment extends Fragment {
                     @Override
                     public void run() {
                         co2label.setText((points.get(points.size() - 1)).getValue().toString());
+                        co2Graph.drawData(points);
+
                     }
                 });
             }
@@ -216,6 +239,8 @@ public class CountryDetailFragment extends Fragment {
                     @Override
                     public void run() {
                         urbanLabel.setText((points.get(points.size() - 1)).getValue().toString() + "%");
+                        urbGraph.drawData(points);
+
                     }
                 });
             }
