@@ -43,7 +43,7 @@ public class CountriesFragment extends Fragment {
         countriesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                listener.selected(Core.countries.get(position));
+                listener.selected((Country)parent.getItemAtPosition(position));
             }
         });
         return view;

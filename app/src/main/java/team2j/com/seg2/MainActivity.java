@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,17 +23,24 @@ import java.util.HashMap;
 public class MainActivity extends Activity {
 
 
+    int level = 0;
+    private FrameLayout countriesFragmentHolder;
+    private FrameLayout chartHolder;
+    private FrameLayout countryDetailFragmentHolder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getActionBar().hide();
-
+        if(!getResources().getBoolean(R.bool.isTablet)) {
+            super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
 
         CountriesFragment fragment = new CountriesFragment();
 
-        FrameLayout countriesFragmentHolder = (FrameLayout)findViewById(R.id.countriesFragmentHolder);
+        countriesFragmentHolder = (FrameLayout)findViewById(R.id.countriesFragmentHolder);
         getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId() , fragment).commit();
 
 
@@ -40,11 +48,11 @@ public class MainActivity extends Activity {
 
         Core.countryDetailFragment = detailFragment;
 
-        FrameLayout countryDetailFragmentHolder = (FrameLayout)findViewById(R.id.countryDetailFragmentHolder);
+        countryDetailFragmentHolder = (FrameLayout)findViewById(R.id.countryDetailFragmentHolder);
 
         final DataChartFragment chartFragment = new DataChartFragment();
-        FrameLayout chartHolder = (FrameLayout)findViewById(R.id.chartHolder);
-        getFragmentManager().beginTransaction().add(chartHolder.getId() , chartFragment).commit();
+        chartHolder = (FrameLayout)findViewById(R.id.chartHolder);
+        getFragmentManager().beginTransaction().add(chartHolder.getId(), chartFragment).commit();
 
         getFragmentManager().beginTransaction().hide(chartFragment).commit();
         getFragmentManager().beginTransaction().hide(detailFragment).commit();
@@ -63,6 +71,11 @@ public class MainActivity extends Activity {
         fragment.setListener(new CountriesFragment.CountrySelected() {
             @Override
             public void selected(Country c) {
+                level = 1;
+                if(!getResources().getBoolean(R.bool.isTablet)){
+                    countriesFragmentHolder.setVisibility(View.GONE);
+                    countryDetailFragmentHolder.setVisibility(View.VISIBLE);
+                }
                 getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).hide(chartFragment).commit();
                 getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(detailFragment).commit();
                 Core.currentCountry = c;
@@ -78,8 +91,12 @@ public class MainActivity extends Activity {
         detailFragment.setListener(new CountryDetailFragment.IndicatorSelected() {
             @Override
             public void selected(ArrayList<DataPoint> points , int type) {
+                level = 2;
                 getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
-
+                if(!getResources().getBoolean(R.bool.isTablet)){
+                    chartHolder.setVisibility(View.VISIBLE);
+                    countryDetailFragmentHolder.setVisibility(View.GONE);
+                }
 
                 if(type == 0){
                         chartFragment.chart.setDescription("CO2");
@@ -127,5 +144,24 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!getResources().getBoolean(R.bool.isTablet) && level > 0){
+            if(level == 2) {
+                chartHolder.setVisibility(View.GONE);
+                countryDetailFragmentHolder.setVisibility(View.VISIBLE);
+
+            }
+            if(level == 1) {
+                countryDetailFragmentHolder.setVisibility(View.GONE);
+                countriesFragmentHolder.setVisibility(View.VISIBLE);
+            }
+            level--;
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 }

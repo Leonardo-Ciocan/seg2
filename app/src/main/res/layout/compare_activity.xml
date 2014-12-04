@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="0dp"
+    tools:context=".CompareActivity">
+
+
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical"
+        android:layout_width="200dp"
+        android:layout_height="match_parent">
+                <TextView
+                    android:text="Comparing"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="14pt"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            <FrameLayout
+                android:id="@+id/countryDetailFragmentHolderFirst"
+                android:layout_width="200dp"
+                android:layout_height="match_parent">
+
+
+            </FrameLayout>
+        </LinearLayout>
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical"
+        android:layout_width="200dp"
+        android:layout_height="match_parent">
+        <TextView
+            android:text="with"
+            android:fontFamily="sans-serif-light"
+            android:textSize="14pt"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <FrameLayout
+            android:id="@+id/secondCountryHolder"
+            android:layout_width="200dp"
+            android:layout_height="fill_parent">
+
+        </FrameLayout>
+        </LinearLayout>
+
+
+
+
+
+    <FrameLayout
+        android:id="@+id/chartHolder"
+        android:layout_marginLeft="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+</FrameLayout>
