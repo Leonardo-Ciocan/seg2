@@ -79,12 +79,24 @@ public class MainActivity extends Activity {
             @Override
             public void selected(ArrayList<DataPoint> points , int type) {
                 getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
-                switch (type){
-                    case 2:
-                        chartFragment.chart.setDescription("Population");
-                        break;
+
+
+                if(type == 0){
+                        chartFragment.chart.setDescription("CO2");
+                    }
+                else if (type == 1) {
+                    chartFragment.chart.setDescription("Life expectancy");
                 }
-                chartFragment.renderData(points,null);
+                    else if (type == 2) {
+                    chartFragment.chart.setDescription("Population");
+                }
+                    else if (type == 3) {
+                    chartFragment.chart.setDescription("Urban population");
+                }
+
+                chartFragment.renderData(points);
+
+
             }
         });
 

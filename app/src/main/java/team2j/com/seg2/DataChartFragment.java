@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.BarChart;
@@ -32,7 +33,7 @@ import java.util.Random;
 public class DataChartFragment extends Fragment {
 
     View view;
-    BarChart chart;
+    public BarChart chart;
 
 
     @Override
@@ -49,17 +50,24 @@ public class DataChartFragment extends Fragment {
 
 //       Core. chart.setNoDataText("Drawing data , please wait.");
 
-
-
+        chart = (BarChart) view.findViewById(R.id.chart);
+        Button boundsButton = (Button)view.findViewById(R.id.boundsButton);
+        boundsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chart.setStartAtZero(!chart.isStartAtZeroEnabled());
+                chart.invalidate();
+            }
+        });
         return view;
 
     }
 
-    public void renderData(ArrayList<DataPoint> points , ArrayList<DataPoint> comparingTo){
+    public void renderData(ArrayList<DataPoint> points){
 
         Random rnd = new Random();
 
-        chart = (BarChart) view.findViewById(R.id.chart);
+
 
         //each DataPoint is converted to a BarEntry
         ArrayList<ArrayList<BarEntry>> values = new ArrayList<ArrayList<BarEntry>>();
@@ -83,31 +91,6 @@ public class DataChartFragment extends Fragment {
 
         ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
 
-        if(comparingTo!=null){
-            Collections.sort(comparingTo, new Comparator<DataPoint>() {
-                @Override
-                public int compare(DataPoint lhs, DataPoint rhs) {
-                    return lhs.getYear() > rhs.getYear() ? 1 : 0;
-                }
-            });
-
-
-            for(DataPoint point : comparingTo){
-                entries1.add(new BarEntry(point.getValue(),point.getYear() - from));
-            }
-            values.add(entries1);
-
-            values.get(0).clear();
-
-            for(int x = 0; x< 40;x++){
-                values.get(0).add(new BarEntry(Math.abs(rnd.nextInt()),x));
-            }
-
-            values.get(1).clear();
-            for(int x = 0; x< 40;x++){
-                values.get(1).add(new BarEntry(Math.abs(rnd.nextInt()),x));
-            }
-        }
 
 
 
@@ -117,7 +100,7 @@ public class DataChartFragment extends Fragment {
         //this needs to be updated :|
         ArrayList<BarDataSet> BarDataSets = new ArrayList<BarDataSet>();
         for(ArrayList<BarEntry> entryArrayList : values){
-            BarDataSet dataSet = new BarDataSet(entryArrayList  , ""+rnd.nextInt());
+            BarDataSet dataSet = new BarDataSet(entryArrayList  , "" );
             n++;
             dataSet.setColor(first ? getResources().getColor(R.color.brandColor) : Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)) );
 
@@ -150,7 +133,7 @@ public class DataChartFragment extends Fragment {
 
         //this disables the values label
 
-       chart.set3DEnabled(true);
+        chart.set3DEnabled(true);
         chart.setDrawYValues(false);
         //this centers the graph so there isn't blank space at the bottom
         chart.setStartAtZero(false);

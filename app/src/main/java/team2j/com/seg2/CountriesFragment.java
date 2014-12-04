@@ -31,7 +31,7 @@ public class CountriesFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.getFilter().filter(s);
+                adapter.getFilter().filter(String.valueOf(s).toLowerCase());
             }
 
             @Override

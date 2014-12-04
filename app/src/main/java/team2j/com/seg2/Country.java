@@ -1,5 +1,9 @@
 package team2j.com.seg2;
 
+import android.provider.SyncStateContract;
+import android.util.Log;
+import android.widget.Filter;
+
 import java.util.ArrayList;
 
 public class Country {
@@ -42,4 +46,6 @@ public class Country {
     public String toString() {
         return name;
     }
+
+
 }
