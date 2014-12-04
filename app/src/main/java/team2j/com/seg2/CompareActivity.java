@@ -34,6 +34,7 @@ public class CompareActivity extends Activity {
 
     boolean shouldGoBack = true;
 
+    int level = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,16 +91,29 @@ public class CompareActivity extends Activity {
         detailFragment.setListener(new CountryDetailFragment.IndicatorSelected() {
             @Override
             public void selected(ArrayList<DataPoint> points, int type) {
+                level = 1;
+                (findViewById(R.id.firstCollumn)).setVisibility(View.GONE);
+
+                chartHolder.setVisibility(View.VISIBLE);
                 chartFragment.renderData(Core.currentCountry.data.get(type), points);
                 getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
-
-
             }
         });
+
+
     }
 
     @Override
     public void onBackPressed() {
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            if(level ==1) {
+                chartHolder.setVisibility(View.GONE);
+                (findViewById(R.id.firstCollumn)).setVisibility(View.VISIBLE);
+                level = 0;
+                return;
+            }
+
+        }
         if (!shouldGoBack) {
             getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(fragment).commit();
             getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).hide(detailFragment).commit();

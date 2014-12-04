@@ -36,6 +36,9 @@ public class MainActivity extends Activity {
         if(!getResources().getBoolean(R.bool.isTablet)) {
             super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+        else {
+            super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
 
 
         CountriesFragment fragment = new CountriesFragment();

@@ -68,15 +68,15 @@ public class ChartCardView extends FrameLayout {
         wallpaint.setStyle(Paint.Style.FILL);
 
         Path wallpath = new Path();
-        wallpath.reset(); // only needed when reusing this path for a new build
+        wallpath.reset();
         if(data.size() == 0 ) return;
-        wallpath.moveTo(getWidth() - data.get(0).x , getHeight() - data.get(0).y); // used for first point
+        wallpath.moveTo(getWidth() - data.get(0).x , getHeight() ); // used for first point
         PointF last = new PointF(0,0);
         for(PointF pt : data){
             wallpath.lineTo(getWidth() - pt.x, getHeight() - pt.y);
             last = pt;
         }
-        wallpath.lineTo( getWidth() - last.x,getHeight()- data.get(0).y);
+        wallpath.lineTo( getWidth() - last.x,getHeight());
 
         canvas.drawPath(wallpath, wallpaint);
     }
