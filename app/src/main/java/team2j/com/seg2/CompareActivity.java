@@ -92,7 +92,9 @@ public class CompareActivity extends Activity {
             @Override
             public void selected(ArrayList<DataPoint> points, int type) {
                 level = 1;
-                (findViewById(R.id.firstCollumn)).setVisibility(View.GONE);
+                if(!getResources().getBoolean(R.bool.isTablet)) {
+                    (findViewById(R.id.firstCollumn)).setVisibility(View.GONE);
+                }
 
                 chartHolder.setVisibility(View.VISIBLE);
                 chartFragment.renderData(Core.currentCountry.data.get(type), points);
