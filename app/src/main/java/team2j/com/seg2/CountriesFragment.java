@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ public class CountriesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setRetainInstance(true);
+
         View view =  inflater.inflate(R.layout.countries_fragment, container, false);
         ListView countriesList = (ListView)view.findViewById(R.id.countriesList);
         final EditText editText= (EditText) view.findViewById(R.id.et_search);

@@ -40,6 +40,7 @@ public class DataChartFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setRetainInstance(true);
 
         View view =  inflater.inflate(R.layout.chart_fragment, container, false);
 
@@ -68,14 +69,16 @@ public class DataChartFragment extends Fragment {
                 chart.saveToGallery("chart" + String.valueOf(rnd.nextInt()) , 100);
             }
         });
-
+        if(points!=null){
+            renderData(points);
+        }
         return view;
-
     }
 
+    ArrayList<DataPoint> points;
     public void renderData(ArrayList<DataPoint> points){
 
-
+        this.points = points;
 
 
         //each DataPoint is converted to a BarEntry

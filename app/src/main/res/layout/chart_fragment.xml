@@ -18,12 +18,7 @@
            android:text="Start from 0"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content" />
-        <Switch
-            android:id="@+id/typeButton"
-            android:textOff="Line"
-            android:textOn="Bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        
         <Button
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"

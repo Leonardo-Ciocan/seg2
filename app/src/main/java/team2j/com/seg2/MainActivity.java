@@ -27,106 +27,107 @@ public class MainActivity extends Activity {
     private FrameLayout countriesFragmentHolder;
     private FrameLayout chartHolder;
     private FrameLayout countryDetailFragmentHolder;
+    private DataChartFragment chartFragment;
+    private CountryDetailFragment detailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(!getResources().getBoolean(R.bool.isTablet)) {
+        /*if(!getResources().getBoolean(R.bool.isTablet)) {
             super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         else {
             super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
+        }*/
 
         setContentView(R.layout.activity_main);
         getActionBar().hide();
 
 
-
-        CountriesFragment fragment = new CountriesFragment();
-
         countriesFragmentHolder = (FrameLayout)findViewById(R.id.countriesFragmentHolder);
 
-        Fragment f = getFragmentManager().findFragmentById(R.id.countriesFragmentHolder);
-        if(!(f != null && f instanceof CountriesFragment)) {
-            getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId() , fragment).commit();
-
+        CountriesFragment fragment = (CountriesFragment)getFragmentManager().findFragmentByTag("COUNTRIES");
+        if(fragment == null){
+            fragment = new CountriesFragment();
+            getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId() , fragment , "COUNTRIES").commit();
 
         }
-
-        final CountryDetailFragment detailFragment = new CountryDetailFragment();
-
-        Core.countryDetailFragment = detailFragment;
 
         countryDetailFragmentHolder = (FrameLayout)findViewById(R.id.countryDetailFragmentHolder);
 
-        final DataChartFragment chartFragment = new DataChartFragment();
+        detailFragment =(CountryDetailFragment)getFragmentManager().findFragmentByTag("DETAIL");
+        if(detailFragment == null){
+            detailFragment = new CountryDetailFragment();
+            getFragmentManager().beginTransaction().add(countryDetailFragmentHolder.getId(), detailFragment , "DETAIL").commit();
+            getFragmentManager().beginTransaction().hide(detailFragment).commit();
+        }
+        Core.countryDetailFragment = detailFragment;
+
+
+
         chartHolder = (FrameLayout)findViewById(R.id.chartHolder);
 
-        Fragment f2 = getFragmentManager().findFragmentById(R.id.chartHolder);
-        if(!(f2 != null && f2 instanceof DataChartFragment)) {
-            getFragmentManager().beginTransaction().add(chartHolder.getId(), chartFragment).commit();
+        chartFragment = (DataChartFragment)getFragmentManager().findFragmentByTag("CHART");
+        if(chartFragment == null){
+            chartFragment = new DataChartFragment();
+            getFragmentManager().beginTransaction().add(chartHolder.getId(), chartFragment , "CHART").commit();
             getFragmentManager().beginTransaction().hide(chartFragment).commit();
+
         }
 
 
 
-        Fragment f3 = getFragmentManager().findFragmentById(R.id.countriesFragmentHolder);
-        if(!(f3 != null && f3 instanceof CountryDetailFragment)) {
-            getFragmentManager().beginTransaction().add(countryDetailFragmentHolder.getId(), detailFragment).commit();
-            getFragmentManager().beginTransaction().hide(detailFragment).commit();
 
 
 
 
-            detailFragment.setListener(new CountryDetailFragment.IndicatorSelected() {
-                @Override
-                public void selected(ArrayList<DataPoint> points , int type) {
-                    level = 2;
-                    getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
-                    if(!getResources().getBoolean(R.bool.isTablet)){
-                        chartHolder.setVisibility(View.VISIBLE);
-                        countryDetailFragmentHolder.setVisibility(View.GONE);
-                    }
-
-                    if(type == 0){
-                        chartFragment.chart.setDescription("CO2");
-                    }
-                    else if (type == 1) {
-                        chartFragment.chart.setDescription("Life expectancy");
-                    }
-                    else if (type == 2) {
-                        chartFragment.chart.setDescription("Population");
-                    }
-                    else if (type == 3) {
-                        chartFragment.chart.setDescription("Urban population");
-                    }
-
-                    chartFragment.renderData(points);
 
 
+        fragment.setListener(new CountriesFragment.CountrySelected() {
+            @Override
+            public void selected(Country c) {
+                level = 1;
+                if(!getResources().getBoolean(R.bool.isTablet)){
+                    countriesFragmentHolder.setVisibility(View.GONE);
+                    countryDetailFragmentHolder.setVisibility(View.VISIBLE);
                 }
-            });
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).hide(chartFragment).commit();
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(detailFragment).commit();
+                Core.currentCountry = c;
+                detailFragment.setCountry(c);
 
-            fragment.setListener(new CountriesFragment.CountrySelected() {
-                @Override
-                public void selected(Country c) {
-                    level = 1;
-                    if (!getResources().getBoolean(R.bool.isTablet)) {
-                        countriesFragmentHolder.setVisibility(View.GONE);
-                        countryDetailFragmentHolder.setVisibility(View.VISIBLE);
-                    }
-                    getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).hide(chartFragment).commit();
-                    getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(detailFragment).commit();
-                    Core.currentCountry = c;
-                    detailFragment.setCountry(c);
+            }
+        });
 
+
+
+
+
+        detailFragment.setListener(new CountryDetailFragment.IndicatorSelected() {
+            @Override
+            public void selected(ArrayList<DataPoint> points, int type) {
+                level = 2;
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
+                if (!getResources().getBoolean(R.bool.isTablet)) {
+                    chartHolder.setVisibility(View.VISIBLE);
+                    countryDetailFragmentHolder.setVisibility(View.GONE);
                 }
-            });
-        }
+
+                if (type == 0) {
+                    chartFragment.chart.setDescription("CO2");
+                } else if (type == 1) {
+                    chartFragment.chart.setDescription("Life expectancy");
+                } else if (type == 2) {
+                    chartFragment.chart.setDescription("Population");
+                } else if (type == 3) {
+                    chartFragment.chart.setDescription("Urban population");
+                }
+
+                chartFragment.renderData(points);
 
 
-
+            }
+        });
 
 
 

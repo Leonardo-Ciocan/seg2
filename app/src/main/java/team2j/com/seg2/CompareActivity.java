@@ -45,37 +45,51 @@ public class CompareActivity extends Activity {
         FrameLayout detailHolder1 = (FrameLayout)findViewById(R.id.countryDetailFragmentHolder);
         getFragmentManager().beginTransaction().add(detailHolder1.getId() , fragment).commit();*/
 
-        detailFragment1 = new CountryDetailFragment();
 
         countriesFragmentHolder = (FrameLayout)findViewById(R.id.secondCountryHolder);
 
         countryDetailFragmentHolder1 = (FrameLayout)findViewById(R.id.countryDetailFragmentHolderFirst);
-        getFragmentManager().beginTransaction().add(countryDetailFragmentHolder1.getId(), detailFragment1).commit();
+
+
+        detailFragment1 = (CountryDetailFragment)getFragmentManager().findFragmentByTag("detail1");
+        if(detailFragment1==null) {
+            detailFragment1 = new CountryDetailFragment();
+            getFragmentManager().beginTransaction().add(countryDetailFragmentHolder1.getId(), detailFragment1, "detail1").commit();
+        }
+
+
         detailFragment1.setCountry(Core.currentCountry);
         detailFragment1.hideButtons();
 
-        detailFragment = new CountryDetailFragment();
-
         countryDetailFragmentHolder = (FrameLayout)findViewById(R.id.countryDetailFragmentHolder);
 
-        getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId(), detailFragment).commit();
+        detailFragment = (CountryDetailFragment)getFragmentManager().findFragmentByTag("detail");
+        if(detailFragment==null) {
+            detailFragment = new CountryDetailFragment();
+            getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId(), detailFragment,"detail").commit();
+        }
         detailFragment.hideButtons();
-
-        chartFragment = new ComparasionChartFragment();
-
 
         chartHolder = (FrameLayout)findViewById(R.id.chartHolder);
 
-        getFragmentManager().beginTransaction().add(chartHolder.getId(), chartFragment).commit();
+        chartFragment =  (ComparasionChartFragment)getFragmentManager().findFragmentByTag("compare_chart");
+        if(chartFragment==null) {
+            chartFragment = new ComparasionChartFragment();
+            getFragmentManager().beginTransaction().add(chartHolder.getId(), chartFragment , "compare_chart").commit();
+        }
 
 
         getFragmentManager().beginTransaction().hide(chartFragment).commit();
         getFragmentManager().beginTransaction().hide(detailFragment).commit();
 
 
-        fragment = new CountriesFragment();
 
-        getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId() , fragment).commit();
+        fragment = (CountriesFragment)getFragmentManager().findFragmentByTag("countries_");
+        if(fragment == null){
+           fragment = new CountriesFragment();
+            getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId() , fragment,"countries_").commit();
+        }
+
 
         fragment.setListener(new CountriesFragment.CountrySelected() {
             @Override
