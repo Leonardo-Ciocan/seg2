@@ -3,6 +3,7 @@ package team2j.com.seg2;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +13,7 @@ import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
@@ -29,6 +31,7 @@ public class MainActivity extends Activity {
     private FrameLayout countryDetailFragmentHolder;
     private DataChartFragment chartFragment;
     private CountryDetailFragment detailFragment;
+    private CountriesFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +49,10 @@ public class MainActivity extends Activity {
 
         countriesFragmentHolder = (FrameLayout)findViewById(R.id.countriesFragmentHolder);
 
-        CountriesFragment fragment = (CountriesFragment)getFragmentManager().findFragmentByTag("COUNTRIES");
+        fragment = (CountriesFragment)getFragmentManager().findFragmentByTag("COUNTRIES");
         if(fragment == null){
             fragment = new CountriesFragment();
-            getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId() , fragment , "COUNTRIES").commit();
+            getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId() , fragment, "COUNTRIES").commit();
 
         }
 
@@ -87,7 +90,7 @@ public class MainActivity extends Activity {
             @Override
             public void selected(Country c) {
                 level = 1;
-                if(!getResources().getBoolean(R.bool.isTablet)){
+                if (!getResources().getBoolean(R.bool.isTablet)) {
                     countriesFragmentHolder.setVisibility(View.GONE);
                     countryDetailFragmentHolder.setVisibility(View.VISIBLE);
                 }
@@ -95,6 +98,10 @@ public class MainActivity extends Activity {
                 getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(detailFragment).commit();
                 Core.currentCountry = c;
                 detailFragment.setCountry(c);
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(fragment.editText.getWindowToken(), 0);
 
             }
         });
