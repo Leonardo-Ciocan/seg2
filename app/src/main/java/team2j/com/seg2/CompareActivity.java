@@ -109,13 +109,15 @@ public class CompareActivity extends Activity {
                     chartFragment.chart.setDescription("Urban population");
                 }
 
+
                 chartHolder.setVisibility(View.VISIBLE);
+                chartFragment.countryName1 = detailFragment1.country.getName();
+                chartFragment.countryName2 = detailFragment.country.getName();
+
                 chartFragment.renderData(Core.currentCountry.data.get(type), points);
                 getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
             }
         });
-
-
     }
 
     @Override

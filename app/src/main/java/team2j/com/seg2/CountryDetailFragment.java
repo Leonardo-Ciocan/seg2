@@ -148,7 +148,7 @@ public class CountryDetailFragment extends Fragment {
 
 
 
-    Country country;
+    public Country country;
     public  void setCountry(Country c){
         country = c;
 

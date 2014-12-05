@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Core {
-    // a list of data points is a line that represents a trend , so this is a list of lines
-    public static ArrayList<DataSet> DataSets = new ArrayList<DataSet>();
-    public static int pending_downloads = 0;
     //public static BarChart chart;
     public static Country  currentCountry;
     public static CountryDetailFragment countryDetailFragment;

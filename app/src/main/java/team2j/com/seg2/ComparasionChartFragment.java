@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -22,6 +23,10 @@ public class ComparasionChartFragment extends Fragment {
     View view;
     public LineChart chart;
 
+    public String countryName1 = "";
+    public String countryName2 = "";
+
+    Random rnd = new Random();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,10 +38,26 @@ public class ComparasionChartFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
 
+        chart = (LineChart) view.findViewById(R.id.chart);
         //Core. chart = (LineChart) view.findViewById(R.id.chart);
 
 //       Core. chart.setNoDataText("Drawing data , please wait.");
+        Button boundsButton = (Button)view.findViewById(R.id.boundsButton);
+        boundsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chart.setStartAtZero(!chart.isStartAtZeroEnabled());
+                chart.invalidate();
+            }
+        });
 
+        Button saveButton = (Button)view.findViewById(R.id.btn_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chart.saveToGallery("chart" + String.valueOf(rnd.nextInt()) , 100);
+            }
+        });
 
 
         return view;
@@ -45,9 +66,7 @@ public class ComparasionChartFragment extends Fragment {
 
     public void renderData(ArrayList<DataPoint> points , ArrayList<DataPoint> comparingTo){
 
-        Random rnd = new Random();
 
-        chart = (LineChart) view.findViewById(R.id.chart);
 
         //each DataPoint is converted to a LineEntry
         ArrayList<ArrayList<Entry>> values = new ArrayList<ArrayList<Entry>>();
@@ -94,7 +113,7 @@ public class ComparasionChartFragment extends Fragment {
         //this needs to be updated :|
         ArrayList<LineDataSet> LineDataSets = new ArrayList<LineDataSet>();
         for(ArrayList<Entry> entryArrayList : values){
-            LineDataSet dataSet = new LineDataSet(entryArrayList  , ""+rnd.nextInt());
+            LineDataSet dataSet = new LineDataSet(entryArrayList  , first ? countryName1 : countryName2);
             n++;
             dataSet.setColor(first ? getResources().getColor(R.color.brandColor) : Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)) );
 
