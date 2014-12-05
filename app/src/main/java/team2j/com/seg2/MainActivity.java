@@ -31,8 +31,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getActionBar().hide();
         if(!getResources().getBoolean(R.bool.isTablet)) {
             super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
@@ -40,12 +38,21 @@ public class MainActivity extends Activity {
             super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
 
+        setContentView(R.layout.activity_main);
+        getActionBar().hide();
+
+
 
         CountriesFragment fragment = new CountriesFragment();
 
         countriesFragmentHolder = (FrameLayout)findViewById(R.id.countriesFragmentHolder);
-        getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId() , fragment).commit();
 
+        Fragment f = getFragmentManager().findFragmentById(R.id.countriesFragmentHolder);
+        if(!(f != null && f instanceof CountriesFragment)) {
+            getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId() , fragment).commit();
+
+
+        }
 
         final CountryDetailFragment detailFragment = new CountryDetailFragment();
 
@@ -55,70 +62,71 @@ public class MainActivity extends Activity {
 
         final DataChartFragment chartFragment = new DataChartFragment();
         chartHolder = (FrameLayout)findViewById(R.id.chartHolder);
-        getFragmentManager().beginTransaction().add(chartHolder.getId(), chartFragment).commit();
 
-        getFragmentManager().beginTransaction().hide(chartFragment).commit();
-        getFragmentManager().beginTransaction().hide(detailFragment).commit();
-
-
-        getFragmentManager().beginTransaction().add(countryDetailFragmentHolder.getId() , detailFragment).commit();
-
+        Fragment f2 = getFragmentManager().findFragmentById(R.id.chartHolder);
+        if(!(f2 != null && f2 instanceof DataChartFragment)) {
+            getFragmentManager().beginTransaction().add(chartHolder.getId(), chartFragment).commit();
+            getFragmentManager().beginTransaction().hide(chartFragment).commit();
+        }
 
 
 
-        getFragmentManager().beginTransaction().hide(chartFragment).commit();
-        getFragmentManager().beginTransaction().hide(detailFragment).commit();
-
-
-
-        fragment.setListener(new CountriesFragment.CountrySelected() {
-            @Override
-            public void selected(Country c) {
-                level = 1;
-                if(!getResources().getBoolean(R.bool.isTablet)){
-                    countriesFragmentHolder.setVisibility(View.GONE);
-                    countryDetailFragmentHolder.setVisibility(View.VISIBLE);
-                }
-                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).hide(chartFragment).commit();
-                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(detailFragment).commit();
-                Core.currentCountry = c;
-                detailFragment.setCountry(c);
-
-            }
-        });
+        Fragment f3 = getFragmentManager().findFragmentById(R.id.countriesFragmentHolder);
+        if(!(f3 != null && f3 instanceof CountryDetailFragment)) {
+            getFragmentManager().beginTransaction().add(countryDetailFragmentHolder.getId(), detailFragment).commit();
+            getFragmentManager().beginTransaction().hide(detailFragment).commit();
 
 
 
 
+            detailFragment.setListener(new CountryDetailFragment.IndicatorSelected() {
+                @Override
+                public void selected(ArrayList<DataPoint> points , int type) {
+                    level = 2;
+                    getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
+                    if(!getResources().getBoolean(R.bool.isTablet)){
+                        chartHolder.setVisibility(View.VISIBLE);
+                        countryDetailFragmentHolder.setVisibility(View.GONE);
+                    }
 
-        detailFragment.setListener(new CountryDetailFragment.IndicatorSelected() {
-            @Override
-            public void selected(ArrayList<DataPoint> points , int type) {
-                level = 2;
-                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
-                if(!getResources().getBoolean(R.bool.isTablet)){
-                    chartHolder.setVisibility(View.VISIBLE);
-                    countryDetailFragmentHolder.setVisibility(View.GONE);
-                }
-
-                if(type == 0){
+                    if(type == 0){
                         chartFragment.chart.setDescription("CO2");
                     }
-                else if (type == 1) {
-                    chartFragment.chart.setDescription("Life expectancy");
-                }
+                    else if (type == 1) {
+                        chartFragment.chart.setDescription("Life expectancy");
+                    }
                     else if (type == 2) {
-                    chartFragment.chart.setDescription("Population");
-                }
+                        chartFragment.chart.setDescription("Population");
+                    }
                     else if (type == 3) {
-                    chartFragment.chart.setDescription("Urban population");
+                        chartFragment.chart.setDescription("Urban population");
+                    }
+
+                    chartFragment.renderData(points);
+
+
                 }
+            });
 
-                chartFragment.renderData(points);
+            fragment.setListener(new CountriesFragment.CountrySelected() {
+                @Override
+                public void selected(Country c) {
+                    level = 1;
+                    if (!getResources().getBoolean(R.bool.isTablet)) {
+                        countriesFragmentHolder.setVisibility(View.GONE);
+                        countryDetailFragmentHolder.setVisibility(View.VISIBLE);
+                    }
+                    getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).hide(chartFragment).commit();
+                    getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(detailFragment).commit();
+                    Core.currentCountry = c;
+                    detailFragment.setCountry(c);
+
+                }
+            });
+        }
 
 
-            }
-        });
+
 
 
 

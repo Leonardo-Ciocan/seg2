@@ -12,9 +12,13 @@
             android:name="team2j.com.seg2.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"
+                    android:configChanges="keyboardHidden|orientation|screenSize"
+                    android:screenOrientation="nosensor"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"
+                    android:configChanges="keyboardHidden|orientation|screenSize"
+                    android:screenOrientation="nosensor" />
             </intent-filter>
         </activity>
 
