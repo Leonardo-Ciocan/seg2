@@ -96,6 +96,19 @@ public class CompareActivity extends Activity {
                     (findViewById(R.id.firstCollumn)).setVisibility(View.GONE);
                 }
 
+                if(type == 0){
+                    chartFragment.chart.setDescription("CO2");
+                }
+                else if (type == 1) {
+                    chartFragment.chart.setDescription("Life expectancy");
+                }
+                else if (type == 2) {
+                    chartFragment.chart.setDescription("Population");
+                }
+                else if (type == 3) {
+                    chartFragment.chart.setDescription("Urban population");
+                }
+
                 chartHolder.setVisibility(View.VISIBLE);
                 chartFragment.renderData(Core.currentCountry.data.get(type), points);
                 getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();

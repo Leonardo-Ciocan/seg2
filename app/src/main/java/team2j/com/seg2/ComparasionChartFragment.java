@@ -20,6 +20,7 @@ import java.util.Random;
 
 public class ComparasionChartFragment extends Fragment {
     View view;
+    public LineChart chart;
 
 
     @Override
@@ -46,7 +47,7 @@ public class ComparasionChartFragment extends Fragment {
 
         Random rnd = new Random();
 
-        final LineChart chart = (LineChart) view.findViewById(R.id.chart);
+        chart = (LineChart) view.findViewById(R.id.chart);
 
         //each DataPoint is converted to a LineEntry
         ArrayList<ArrayList<Entry>> values = new ArrayList<ArrayList<Entry>>();

@@ -36,6 +36,7 @@ public class DataChartFragment extends Fragment {
     public BarChart chart;
 
 
+    Random rnd = new Random();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,13 +60,21 @@ public class DataChartFragment extends Fragment {
                 chart.invalidate();
             }
         });
+
+        Button saveButton = (Button)view.findViewById(R.id.btn_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chart.saveToGallery("chart" + String.valueOf(rnd.nextInt()) , 100);
+            }
+        });
+
         return view;
 
     }
 
     public void renderData(ArrayList<DataPoint> points){
 
-        Random rnd = new Random();
 
 
 
@@ -100,7 +109,7 @@ public class DataChartFragment extends Fragment {
         //this needs to be updated :|
         ArrayList<BarDataSet> BarDataSets = new ArrayList<BarDataSet>();
         for(ArrayList<BarEntry> entryArrayList : values){
-            BarDataSet dataSet = new BarDataSet(entryArrayList  , "" );
+            BarDataSet dataSet = new BarDataSet(entryArrayList  , Core.currentCountry.getName() );
             n++;
             dataSet.setColor(first ? getResources().getColor(R.color.brandColor) : Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)) );
 
