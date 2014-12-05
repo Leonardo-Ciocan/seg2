@@ -15,12 +15,13 @@ import android.widget.TextView;
 import java.util.Locale;
 
 public class CountriesFragment extends Fragment {
+    EditText editText;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.countries_fragment, container, false);
         ListView countriesList = (ListView)view.findViewById(R.id.countriesList);
-        final EditText editText= (EditText) view.findViewById(R.id.et_search);
+      editText  = (EditText) view.findViewById(R.id.et_search);
         final CountriesAdapter adapter=new CountriesAdapter(getActivity());
         countriesList.setAdapter(adapter);
         editText.addTextChangedListener(new TextWatcher() {

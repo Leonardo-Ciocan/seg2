@@ -3,6 +3,7 @@ package team2j.com.seg2;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +13,7 @@ import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
@@ -41,7 +43,7 @@ public class MainActivity extends Activity {
         }
 
 
-        CountriesFragment fragment = new CountriesFragment();
+       final CountriesFragment fragment = new CountriesFragment();
 
         countriesFragmentHolder = (FrameLayout)findViewById(R.id.countriesFragmentHolder);
         getFragmentManager().beginTransaction().add(countriesFragmentHolder.getId() , fragment).commit();
@@ -83,6 +85,10 @@ public class MainActivity extends Activity {
                 getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(detailFragment).commit();
                 Core.currentCountry = c;
                 detailFragment.setCountry(c);
+
+                InputMethodManager imm = (InputMethodManager)getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(fragment.editText.getWindowToken(), 0);
 
             }
         });
