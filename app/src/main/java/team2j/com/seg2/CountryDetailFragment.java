@@ -9,9 +9,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -48,6 +51,7 @@ public class CountryDetailFragment extends Fragment {
     private ChartCardView urbGraph;
     private ChartCardView lifeGraph;
     private View view;
+    private ImageView flag;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -130,8 +134,23 @@ public class CountryDetailFragment extends Fragment {
             }
         });
 
+        final FrameLayout flagHolder = (FrameLayout)view.findViewById(R.id.flagHolder);
+        flagHolder.setPivotY(0);
 
+        final ScrollView scrollView = (ScrollView)view.findViewById(R.id.scrollview);
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 
+            @Override
+            public void onScrollChanged() {
+                flagHolder.setPivotX(flagHolder.getWidth()/2);
+                int scrollY = scrollView.getScrollY();
+                float h = flagHolder.getHeight();
+                float alpha = 1 - scrollY / (h == 0 ? 0.01f:h);
+                flagHolder.setAlpha(alpha);
+                flagHolder.setScaleX(alpha);
+                flagHolder.setScaleY(alpha);
+            }
+        });
 
 
         if(hide){
@@ -156,11 +175,7 @@ public class CountryDetailFragment extends Fragment {
     public  void setCountry(Country c){
         country = c;
 
-        ImageView flag = (ImageView) view.findViewById(R.id.flag);
-        String countryName = c.getName();
-        int intId = getActivity().getResources().getIdentifier(countryName.toLowerCase(), "drawable", getActivity().getPackageName());
 
-        flag.setImageResource(intId);
 
         //Core.currentCountry = c;
          String url = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.POP.TOTL?date="+Core.selectedFrom+":"+Core.selectedTo+"&format=json";
@@ -179,6 +194,12 @@ public class CountryDetailFragment extends Fragment {
                         population.setText((points.get(points.size() - 1)).getValue().toString());
                         name.setText(country.getName());
                         populationGraph.drawData(points);
+
+                        flag = (ImageView) view.findViewById(R.id.flag);
+                        String countryName = country.getName();
+                        int intId = getActivity().getResources().getIdentifier(countryName.toLowerCase(), "drawable", getActivity().getPackageName());
+
+                        flag.setImageResource(intId);
                     }
                 });
 

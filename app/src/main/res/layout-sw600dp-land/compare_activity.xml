@@ -8,6 +8,7 @@
     android:paddingRight="10dp"
     android:paddingTop="10dp"
     android:paddingBottom="0dp"
+    android:background="@color/background"
     tools:context=".CompareActivity">
 
 
