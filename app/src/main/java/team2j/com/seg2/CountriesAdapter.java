@@ -29,7 +29,13 @@ public class CountriesAdapter extends ArrayAdapter<Country> {
         View rowView = inflater.inflate(R.layout.country_row, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.countryName);
         textView.setText(getItem(position).getName());
+        ImageView flag = (ImageView) rowView.findViewById(R.id.flag);
 
+
+        String countryName = getItem(position).getName().toLowerCase();
+        int intId = context.getResources().getIdentifier(countryName, "drawable", context.getPackageName());
+
+        flag.setImageResource(intId);
         return rowView;
     }
 

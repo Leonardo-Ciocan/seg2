@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:layout_margin="3dp"
+        android:id="@+id/flag"
+        android:layout_width="match_parent"
+        android:src="@drawable/unitedkingdom"
+        android:layout_height="75dp" />
     <TextView
         android:id="@+id/countryName"
         android:fontFamily="sans-serif-light"
@@ -35,16 +45,14 @@
             android:layout_weight="1"/>
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        >
+
         <LinearLayout
 
             android:paddingBottom="15dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
+            
 
             <TextView
                 android:layout_marginTop="10dp"
@@ -222,6 +230,5 @@
                 </LinearLayout></FrameLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>
-
-    </ScrollView>
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
