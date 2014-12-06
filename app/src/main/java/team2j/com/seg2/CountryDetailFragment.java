@@ -9,8 +9,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -46,16 +50,18 @@ public class CountryDetailFragment extends Fragment {
     private ChartCardView co2Graph;
     private ChartCardView urbGraph;
     private ChartCardView lifeGraph;
+    private View view;
+    private ImageView flag;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setRetainInstance(true);
-        View view =  inflater.inflate(R.layout.country_detail_fragment, container, false);
+        view = inflater.inflate(R.layout.country_detail_fragment, container, false);
         //view.setBackgroundColor(Color.RED);
 
-        fromButton = (Button)view.findViewById(R.id.fromButton);
-        toButton = (Button)view.findViewById(R.id.toButton);
+        fromButton = (Button) view.findViewById(R.id.fromButton);
+        toButton = (Button) view.findViewById(R.id.toButton);
         yearDialogTo = new YearSelectorDialog(toButton,true);
         yearDialogFrom = new YearSelectorDialog(fromButton,false);
         fromButton.setOnClickListener(new View.OnClickListener() {
@@ -74,19 +80,19 @@ public class CountryDetailFragment extends Fragment {
                   setCountry(Core.currentCountry);
             }
         });
-        name = (TextView)view.findViewById(R.id.countryName);
-        population = (TextView)view.findViewById(R.id.population);
-        life = (TextView)view.findViewById(R.id.life);
-        co2label = (TextView)view.findViewById(R.id.co2label);
-        urbanLabel = (TextView)view.findViewById(R.id.urbanlabel);
+        name = (TextView) view.findViewById(R.id.countryName);
+        population = (TextView) view.findViewById(R.id.population);
+        life = (TextView) view.findViewById(R.id.life);
+        co2label = (TextView) view.findViewById(R.id.co2label);
+        urbanLabel = (TextView) view.findViewById(R.id.urbanlabel);
 
 
-        populationGraph = (ChartCardView)view.findViewById(R.id.population_graph);
-        co2Graph = (ChartCardView)view.findViewById(R.id.co2_graph);
-        urbGraph = (ChartCardView)view.findViewById(R.id.urban_graph);
-        lifeGraph = (ChartCardView)view.findViewById(R.id.life_graph);
+        populationGraph = (ChartCardView) view.findViewById(R.id.population_graph);
+        co2Graph = (ChartCardView) view.findViewById(R.id.co2_graph);
+        urbGraph = (ChartCardView) view.findViewById(R.id.urban_graph);
+        lifeGraph = (ChartCardView) view.findViewById(R.id.life_graph);
 
-        populationCard = (CardView)view.findViewById(R.id.populationCard);
+        populationCard = (CardView) view.findViewById(R.id.populationCard);
         populationCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +101,7 @@ public class CountryDetailFragment extends Fragment {
             }
         });
 
-        lifeCard = (CardView)view.findViewById(R.id.lifeCard);
+        lifeCard = (CardView) view.findViewById(R.id.lifeCard);
         lifeCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,7 +109,7 @@ public class CountryDetailFragment extends Fragment {
             }
         });
 
-        co2card = (CardView)view.findViewById(R.id.co2card);
+        co2card = (CardView) view.findViewById(R.id.co2card);
         co2card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +117,7 @@ public class CountryDetailFragment extends Fragment {
             }
         });
 
-        urbanCard = (CardView)view.findViewById(R.id.urbancard);
+        urbanCard = (CardView) view.findViewById(R.id.urbancard);
         urbanCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +125,7 @@ public class CountryDetailFragment extends Fragment {
             }
         });
 
-        compareButton = (Button)view.findViewById(R.id.compareButton);
+        compareButton = (Button) view.findViewById(R.id.compareButton);
         compareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,8 +134,23 @@ public class CountryDetailFragment extends Fragment {
             }
         });
 
+        final FrameLayout flagHolder = (FrameLayout)view.findViewById(R.id.flagHolder);
+        flagHolder.setPivotY(0);
 
+        final ScrollView scrollView = (ScrollView)view.findViewById(R.id.scrollview);
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 
+            @Override
+            public void onScrollChanged() {
+                flagHolder.setPivotX(flagHolder.getWidth()/2);
+                int scrollY = scrollView.getScrollY();
+                float h = flagHolder.getHeight();
+                float alpha = 1 - scrollY / (h == 0 ? 0.01f:h);
+                flagHolder.setAlpha(alpha);
+                flagHolder.setScaleX(alpha);
+                flagHolder.setScaleY(alpha);
+            }
+        });
 
 
         if(hide){
@@ -154,6 +175,8 @@ public class CountryDetailFragment extends Fragment {
     public  void setCountry(Country c){
         country = c;
 
+
+
         //Core.currentCountry = c;
          String url = "http://api.worldbank.org/countries/" + c.getId() + "/indicators/SP.POP.TOTL?date="+Core.selectedFrom+":"+Core.selectedTo+"&format=json";
 
@@ -171,6 +194,12 @@ public class CountryDetailFragment extends Fragment {
                         population.setText((points.get(points.size() - 1)).getValue().toString());
                         name.setText(country.getName());
                         populationGraph.drawData(points);
+
+                        flag = (ImageView) view.findViewById(R.id.flag);
+                        String countryName = country.getName();
+                        int intId = getActivity().getResources().getIdentifier(countryName.toLowerCase(), "drawable", getActivity().getPackageName());
+
+                        flag.setImageResource(intId);
                     }
                 });
 
