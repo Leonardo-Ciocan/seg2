@@ -134,21 +134,23 @@ public class CountryDetailFragment extends Fragment {
             }
         });
 
+        flag = (ImageView) view.findViewById(R.id.flag);
+
         final FrameLayout flagHolder = (FrameLayout)view.findViewById(R.id.flagHolder);
-        flagHolder.setPivotY(0);
+        flag.setPivotY(0);
 
         final ScrollView scrollView = (ScrollView)view.findViewById(R.id.scrollview);
         scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 
             @Override
             public void onScrollChanged() {
-                flagHolder.setPivotX(flagHolder.getWidth()/2);
+                flag.setPivotX(flagHolder.getWidth()/2);
                 int scrollY = scrollView.getScrollY();
                 float h = flagHolder.getHeight();
                 float alpha = 1 - scrollY / (h == 0 ? 0.01f:h);
-                flagHolder.setAlpha(alpha);
-                flagHolder.setScaleX(alpha);
-                flagHolder.setScaleY(alpha);
+                flag.setAlpha(alpha*2);
+                //flag.setScaleX(alpha);
+                flag.setScaleY(alpha);
             }
         });
 

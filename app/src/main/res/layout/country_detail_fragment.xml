@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
     <FrameLayout
         android:id="@+id/flagHolder"
-        android:layout_margin="3dp"
         android:layout_width="match_parent"
         android:layout_height="175dp">
         <ImageView
@@ -46,6 +45,7 @@
 
 
     <Button
+
         android:id="@+id/compareButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

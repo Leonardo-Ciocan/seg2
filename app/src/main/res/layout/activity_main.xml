@@ -2,14 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="0dp"
+
     android:orientation="horizontal"
     tools:context=".MainActivity">
 
     <FrameLayout
+        android:layout_margin="8dp"
         android:id="@+id/countriesFragmentHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -25,6 +23,7 @@
     </FrameLayout>
 
     <FrameLayout
+        android:layout_margin="8dp"
         android:visibility="gone"
         android:id="@+id/chartHolder"
         android:layout_width="match_parent"
