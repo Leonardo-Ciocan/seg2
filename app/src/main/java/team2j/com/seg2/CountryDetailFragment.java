@@ -199,6 +199,7 @@ public class CountryDetailFragment extends Fragment {
 
                         flag = (ImageView) view.findViewById(R.id.flag);
                         String countryName = country.getName();
+                        if(countryName.equals("United Kingdom")) countryName = "unitedkingdom";
                         int intId = getActivity().getResources().getIdentifier(countryName.toLowerCase(), "drawable", getActivity().getPackageName());
 
                         flag.setImageResource(intId);

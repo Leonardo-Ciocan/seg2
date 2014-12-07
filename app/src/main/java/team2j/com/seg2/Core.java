@@ -68,7 +68,7 @@ public class Core {
             add(new Country("Greece","gr"));
             add(new Country("Slovenia","si"));
             add(new Country("Croatia","hr"));
-            add(new Country("Bosnia-Herzegovina","ba"));
+            add(new Country("Bosnia","ba"));
             //add(new Country("SanMarino","sm"));
             add(new Country("Turkey","tr"));
             add(new Country("Portugal","pt"));
