@@ -137,6 +137,13 @@ public class CompareActivity extends Activity {
                 getFragmentManager().beginTransaction().setCustomAnimations(R.anim.show, R.anim.hide).show(chartFragment).commit();
             }
         });
+
+        detailFragment1.setListener( new CountryDetailFragment.IndicatorSelected() {
+            @Override
+            public void selected(ArrayList<DataPoint> points, int type) {
+                //this prevents crashing
+            }
+        });
     }
 
     @Override
