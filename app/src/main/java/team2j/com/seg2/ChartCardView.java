@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ChartCardView extends FrameLayout {
     public ChartCardView(Context context) {
@@ -54,6 +55,7 @@ public class ChartCardView extends FrameLayout {
             data.add(new PointF(x,y));
         }
 
+
         invalidate();
 
     }
@@ -62,10 +64,17 @@ public class ChartCardView extends FrameLayout {
     protected void onDraw(Canvas canvas) {
 
         setAlpha(0.075f);
+
         super.onDraw(canvas);
         Paint wallpaint = new Paint();
-        wallpaint.setColor(Color.DKGRAY);
-        wallpaint.setStyle(Paint.Style.FILL);
+
+
+
+        Random r = new Random();
+        int color = Color.argb(255, r.nextInt(255), r.nextInt(255), r.nextInt(255));
+
+        wallpaint.setColor(color);
+
 
         Path wallpath = new Path();
         wallpath.reset();
@@ -78,7 +87,11 @@ public class ChartCardView extends FrameLayout {
         }
         wallpath.lineTo( getWidth() - last.x,getHeight());
 
+
+
         canvas.drawPath(wallpath, wallpaint);
+        ;
+
     }
 
 
