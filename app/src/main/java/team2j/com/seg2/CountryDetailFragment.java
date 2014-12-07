@@ -193,7 +193,7 @@ public class CountryDetailFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        population.setText((points.get(points.size() - 1)).getValue().toString());
+                        population.setText((points.get(0)).getValue().toString());
                         name.setText(country.getName());
                         populationGraph.drawData(points);
 
@@ -224,7 +224,7 @@ public class CountryDetailFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        life.setText((points.get(points.size() - 1)).getValue().toString());
+                        life.setText((points.get(0)).getValue().toString());
                         lifeGraph.drawData(points);
 
                     }
@@ -249,7 +249,7 @@ public class CountryDetailFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        co2label.setText((points.get(points.size() - 1)).getValue().toString());
+                        co2label.setText((points.get(0)).getValue().toString());
                         co2Graph.drawData(points);
 
                     }
@@ -271,7 +271,7 @@ public class CountryDetailFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        urbanLabel.setText((points.get(points.size() - 1)).getValue().toString() + "%");
+                        urbanLabel.setText((points.get(0)).getValue().toString() + "%");
                         urbGraph.drawData(points);
 
                     }
