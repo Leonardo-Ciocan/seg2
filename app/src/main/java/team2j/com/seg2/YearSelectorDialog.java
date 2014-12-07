@@ -27,17 +27,20 @@ public class YearSelectorDialog extends DialogFragment {
     Button linkedButton;
 
     boolean isOnLastYear;
-    public YearSelectorDialog(){}
-    public YearSelectorDialog(Button linkedButton , boolean isOnLastYear){
+
+    public YearSelectorDialog() {
+    }
+
+    public YearSelectorDialog(Button linkedButton, boolean isOnLastYear) {
         this.linkedButton = linkedButton;
-        for(int x = 1960 ; x <= 2014;x++){
+        for (int x = 1960; x <= 2014; x++) {
             years.add(String.valueOf(x));
         }
         this.isOnLastYear = isOnLastYear;
 
         //selectedYear = isOnLastYear ? "2014" : "1960";
 
-        selectedYearId = isOnLastYear ? years.size()-1:0;
+        selectedYearId = isOnLastYear ? years.size() - 1 : 0;
     }
 
 
@@ -48,25 +51,27 @@ public class YearSelectorDialog extends DialogFragment {
                 new AlertDialog.Builder(getActivity());
 
 
-
         final String[] arr = years.toArray(new String[years.size()]);
 
-        builder.setTitle("Select a year").setSingleChoiceItems(arr ,selectedYearId, new DialogInterface.OnClickListener() {
+        builder.setTitle("Select a year").setSingleChoiceItems(arr, selectedYearId, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 selectedYear = arr[which];
 
 
-                    if( isOnLastYear ) { Core.selectedTo = Integer.parseInt(selectedYear);// String url = "http://api.worldbank.org/countries/" + Core.currentCountry.getId() + "/indicators/SP.POP.TOTL?date="+CountryDetailFragment.selectedFrom+":"+CountryDetailFragment.selectedTo+"&format=json";
+                if (isOnLastYear) {
+                  if(Core.selectedFrom<Integer.parseInt(selectedYear))  {Core.selectedTo = Integer.parseInt(selectedYear); setButtonText();}// String url = "http://api.worldbank.org/countries/" + Core.currentCountry.getId() + "/indicators/SP.POP.TOTL?date="+CountryDetailFragment.selectedFrom+":"+CountryDetailFragment.selectedTo+"&format=json";
 
-                    }else{ Core.selectedFrom = Integer.parseInt(selectedYear);
-                   }
+
+                } else {
+                    if (Core.selectedTo > Integer.parseInt(selectedYear)){
+                        Core.selectedFrom = Integer.parseInt(selectedYear);
+                    setButtonText();
+                    }
+                }
                 selectedYearId = which;
 
 
-                linkedButton.setText((isOnLastYear ? "To " : "From " ) + selectedYear);
-
-                Core.countryDetailFragment.setCountry(Core.currentCountry);
 
                /* if(Core.selectedFrom != null && Core.selectedTo !=null){
                     BarData data = Core.chart.getData();
@@ -78,4 +83,13 @@ public class YearSelectorDialog extends DialogFragment {
 
         return builder.create();
     }
+
+    public void setButtonText() {
+
+
+    linkedButton.setText((isOnLastYear?"To ":"From ")+selectedYear);
+
+    Core.countryDetailFragment.setCountry(Core.currentCountry);
+}
+
 }
