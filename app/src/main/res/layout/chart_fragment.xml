@@ -6,40 +6,75 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginBottom="50dp"/>
+        android:layout_marginBottom="75dp"
+        android:layout_height="fill_parent"/>
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginBottom="50dp"/>
+
+        android:layout_marginBottom="75dp"
+        android:layout_height="fill_parent"/>
+
+
     <LinearLayout
-        android:layout_marginBottom="7dp"
+        android:layout_width="215dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-       <Switch
-           android:id="@+id/boundsButton"
-           android:layout_below = "@id/lineChart"
-           android:text="Start from 0"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:checked="false" />
+        android:layout_marginTop="20dp"
+        >
+
         <Switch
             android:id="@+id/graphSwitch"
-            android:layout_below = "@id/boundsButton"
-            android:text="Switch Graph"
-            android:layout_width="wrap_content"
+            android:text="Switch graph"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="false" />
-        
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
-            android:layout_below = "@id/lineChart"
+            android:checked="false"
+
+            android:layout_above="@+id/showValues"
+            android:layout_toRightOf="@+id/boundsButton"
+            android:layout_toEndOf="@+id/boundsButton"
+
+            android:layout_gravity="left|bottom" />
+
+        <Switch
+            android:id="@+id/boundsButton"
+
+            android:text="Start from 0"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save to gallery"/>
+            android:checked="false"
+
+            android:layout_alignBottom="@+id/showValues"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center" />
+        <Switch
+            android:id="@+id/showValues"
+
+            android:text="Show values"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="right|top" />
+
+        </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="107dp"
+
+        android:layout_height="79dp"
+        android:text="Save to gallery"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="right|bottom"
+
+        />
 
 
-    </LinearLayout>
 </FrameLayout>

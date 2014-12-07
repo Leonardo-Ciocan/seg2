@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
     private CountryDetailFragment detailFragment;
     private CountriesFragment fragment;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

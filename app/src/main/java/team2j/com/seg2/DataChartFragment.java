@@ -41,6 +41,7 @@ public class DataChartFragment extends Fragment {
 
     public LineChart lineChart;
 
+    public boolean showValuesBoolean = false;
     Random rnd = new Random();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,14 +67,29 @@ public class DataChartFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 chart.setStartAtZero(!chart.isStartAtZeroEnabled());
-                chart.invalidate();
-                lineChart.setStartAtZero(!chart.isStartAtZeroEnabled());
+
+                lineChart.setStartAtZero(chart.isStartAtZeroEnabled());
                 lineChart.invalidate();
+                chart.invalidate();
+
             }
         });
 
         Button saveButton = (Button)view.findViewById(R.id.btn_save);
         Button lineGraphButton = (Button) view.findViewById(R.id.graphSwitch);
+        final Button showValuesButton = (Button) view.findViewById(R.id.showValues);
+
+        showValuesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showValuesBoolean = !showValuesBoolean;
+                chart.setDrawYValues(showValuesBoolean);
+                lineChart.setDrawYValues(showValuesBoolean);
+                chart.invalidate();
+                lineChart.invalidate();
+
+            }
+        });
 
         lineGraphButton.setOnClickListener(new View.OnClickListener() {
                                                @Override
@@ -209,16 +225,18 @@ public class DataChartFragment extends Fragment {
 
         chart.set3DEnabled(true);
         chart.setDrawYValues(false);
+
         //this centers the graph so there isn't blank space at the bottom
         chart.setStartAtZero(false);
+
         chart.setData(data);
 
-
+        lineChart.setData(lineData);
         lineChart.setDrawYValues(false);
 
         lineChart.setStartAtZero(false);
-        chart.setData(data);
-        lineChart.setData(lineData);
+
+
         chart.invalidate();
         lineChart.invalidate();
 
