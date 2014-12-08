@@ -81,7 +81,7 @@ public class Core {
 
 
 //            add(new Country("Vietnam","vn"));
-            add(new Country("China","cn"));
+
 //            add(new Country("United States","us"));
 //            add(new Country("Japan","jp"));
 //            add(new Country("Korea","kr"));

@@ -1,12 +1,15 @@
 package team2j.com.seg2;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.graphics.drawable.PictureDrawable;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
@@ -68,10 +71,20 @@ public class ChartCardView extends FrameLayout {
         super.onDraw(canvas);
         Paint wallpaint = new Paint();
 
+     /*   PictureDrawable pictureDrawable = ()findViewById(R.drawable.albania);
 
+        Bitmap bitmap = (Bitmap)findViewById(R.drawable.albania);
+
+        Palette.generateAsync( , new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette palette) {
+                // Do something with colors...
+            }
+        });
+*/
 
         Random r = new Random();
-        int color = Color.argb(255, r.nextInt(255), r.nextInt(255), r.nextInt(255));
+        int color = Color.argb(250, r.nextInt(255), r.nextInt(255), r.nextInt(255));
+
 
         wallpaint.setColor(color);
 
