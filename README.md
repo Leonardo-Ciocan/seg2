@@ -1,6 +1,4 @@
 ##SEG project 2
 
-###How to contribute
-//todo
-###How to set up
-//todo
+#Attribution
+FLAGS -  http://www.iconspedia.com/pack/european-flags-1631/
