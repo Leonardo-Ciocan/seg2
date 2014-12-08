@@ -6,32 +6,61 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class Core {
-    //public static BarChart chart;
+    /**
+     * The country the user selected
+     */
     public static Country  currentCountry;
+    /**
+     * The fragment on the main activity
+     */
     public static CountryDetailFragment countryDetailFragment;
 
+    /**
+     * The year filter as set by the user
+     */
     public static Integer selectedFrom = 1960;
+    /**
+     * The year filter as set by the user
+     */
     public static Integer selectedTo = 2014;
 
-    public Country countryToCompare;
 
+    /**
+     * Identifies CO2
+     */
     public static int CO2 = 0;
+    /**
+     * Identifies life expectancy
+     */
     public static int LIFE = 1;
+    /**
+     * Identifies population
+     */
     public static int POPULATION = 2;
+    /**
+     * Identifies urban population percentage
+     */
     public static int URBAN = 3;
 
-    //this is triggered when all downloads are done
-    public static OnDataSetsReady listener;
-    public static void addOnDataSetsReady(OnDataSetsReady listener){
-        Core.listener = listener;
-    }
-    public interface OnDataSetsReady{
-        void ready();
+    /**
+     * The current year
+     */
+    public static int Year;
+
+    static {
+        Calendar c = Calendar.getInstance();
+        Year = c.get(Calendar.YEAR);
+       selectedTo = Year;
     }
 
+
+    /**
+     * All the countries and their ids
+     */
     public static ArrayList<Country> countries = new ArrayList<Country>(){
         {
             add(new Country("United Kingdom" , "gb"));
@@ -74,38 +103,23 @@ public class Core {
             add(new Country("Portugal","pt"));
             add(new Country("Andorra","ad"));
             add(new Country("Serbia","rs"));
-
-
-
-
-
-
-//            add(new Country("Vietnam","vn"));
-
-//            add(new Country("United States","us"));
-//            add(new Country("Japan","jp"));
-//            add(new Country("Korea","kr"));
-//            add(new Country("Singapore","sg"));
-//            add(new Country("Bangladesh","bd"));
-//            add(new Country("Iraq" , "irq"));
-
-
-
-
         }
     };
 
-    public static final int POPULATION_JSON = 1;
 
-    public static ArrayList<DataPoint> parsePopulationJson(String json){
+    /**
+     * Parses the data
+     * @param json The json returned by the downloader
+     * @see team2j.com.seg2.DownloadTask
+     * @return The values and years in an array of {@link team2j.com.seg2.DataPoint}
+     */
+    public static ArrayList<DataPoint> parse(String json){
         ArrayList<DataPoint> history = new ArrayList<DataPoint>();
-        JSONArray jObject = null;
+        JSONArray jObject;
         JSONArray object = null;
-        String url = null;
         try {
             jObject = new JSONArray(json);
             object = jObject.getJSONArray(1);
-            int x = 0;
         } catch (JSONException e) {
             e.printStackTrace();
         }

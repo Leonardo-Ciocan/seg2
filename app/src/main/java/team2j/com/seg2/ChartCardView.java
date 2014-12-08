@@ -17,6 +17,9 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This class represents the small chart in the background of an indicator card
+ */
 public class ChartCardView extends FrameLayout {
     public ChartCardView(Context context) {
         super(context);
@@ -34,6 +37,11 @@ public class ChartCardView extends FrameLayout {
     }
 
     ArrayList<PointF> data = new ArrayList<PointF>();
+
+    /**
+     * Draws the chart
+     * @param points the x and y values to draw
+     */
     public void drawData(ArrayList<DataPoint> points){
         data.clear();
         float dx = getWidth() / points.size();

@@ -19,14 +19,28 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+/**
+ * The chart used to compare two different countries's indicators
+ */
 public class ComparasionChartFragment extends Fragment {
     View view;
+    /**
+     * The internal chart
+     */
     public LineChart chart;
 
+    /**
+     * Name of first country , used for legend
+     */
     public String countryName1 = "";
+
+    /**
+     * Name of first country , used for legend
+     */
     public String countryName2 = "";
 
     Random rnd = new Random();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +78,11 @@ public class ComparasionChartFragment extends Fragment {
 
     }
 
+    /**
+     * Draws the line chart for the two countries
+     * @param points The first x and y set
+     * @param comparingTo The second x and y set
+     */
     public void renderData(ArrayList<DataPoint> points , ArrayList<DataPoint> comparingTo){
 
 

@@ -1,42 +1,31 @@
 package team2j.com.seg2;
 
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.location.GpsStatus;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreProtocolPNames;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
+/**
+ * Downloads the json and passes it to the parser
+ */
 public class DownloadTask extends AsyncTask<String, Object, Object> {
-    ImageView bmImage;
 
     int type = 0;
     public DownloadTask(int type) {
         this.type = type;
     }
 
-    //the network operations are run in the background
+    /**
+     * downloads the json
+     * @param urls the url to download
+     * @return the data parsed
+     */
     protected Object doInBackground(String... urls) {
 
         try {
@@ -64,7 +53,7 @@ public class DownloadTask extends AsyncTask<String, Object, Object> {
             }
 
 
-            ArrayList<DataPoint> population = Core.parsePopulationJson(result);
+            ArrayList<DataPoint> population = Core.parse(result);
 
 
         /*//this download is done
@@ -86,6 +75,10 @@ public class DownloadTask extends AsyncTask<String, Object, Object> {
 
     }
 
+    /**
+     * Triggered when the download and parsing is done
+     * @param listener Sets the listener to be triggered
+     */
     DataDownloaded listener;
     public void setListener(DataDownloaded listener){
         this.listener = listener;

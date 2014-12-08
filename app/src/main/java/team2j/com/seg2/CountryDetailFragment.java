@@ -282,6 +282,10 @@ public class CountryDetailFragment extends Fragment {
         urbanTask.execute(urbalUrl);
     }
 
+    /**
+     * Triggered when the user presses an indicator
+     * @param listener Sets the listener to be triggered
+     */
     IndicatorSelected listener;
     public void setListener(IndicatorSelected listener){
         this.listener = listener;

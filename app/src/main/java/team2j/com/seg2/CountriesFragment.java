@@ -15,6 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import java.util.Locale;
 
+/**
+ * The fragment collumn that contains the countries listview
+ */
 public class CountriesFragment extends Fragment {
     EditText editText;
     @Override
@@ -55,6 +58,11 @@ public class CountriesFragment extends Fragment {
 
 
     CountrySelected listener;
+
+    /**
+     * Triggered when the user presses a country
+     * @param listener Sets the listener to be triggered
+     */
     public void setListener(CountrySelected listener){
         this.listener = listener;
     }

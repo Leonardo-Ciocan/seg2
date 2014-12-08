@@ -15,12 +15,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+/**
+ * Let's the user select a year from 2060 to the current year
+ */
 public class YearSelectorDialog extends DialogFragment {
 
     public ArrayList<String> Years = new ArrayList<String>();
     public String selectedYear = "";
-    Integer selectedFrom = 1960;
-    Integer selectedTo = 2014;
     ArrayList<String> years = new ArrayList<String>();
     int selectedYearId = 0;
 
@@ -33,12 +34,11 @@ public class YearSelectorDialog extends DialogFragment {
 
     public YearSelectorDialog(Button linkedButton, boolean isOnLastYear) {
         this.linkedButton = linkedButton;
-        for (int x = 1960; x <= 2014; x++) {
+        for (int x = 1960; x <= Core.Year; x++) {
             years.add(String.valueOf(x));
         }
         this.isOnLastYear = isOnLastYear;
 
-        //selectedYear = isOnLastYear ? "2014" : "1960";
 
         selectedYearId = isOnLastYear ? years.size() - 1 : 0;
     }

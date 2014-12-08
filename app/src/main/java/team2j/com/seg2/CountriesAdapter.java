@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * Used to populate the countries listview
+ */
 public class CountriesAdapter extends ArrayAdapter<Country> {
 
     ArrayList<Country> countries = new ArrayList<Country>();

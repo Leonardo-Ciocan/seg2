@@ -6,9 +6,15 @@ import android.widget.Filter;
 
 import java.util.ArrayList;
 
+/**
+ * A country containing a name and id
+ */
 public class Country {
     String name;
     String id;
+    /**
+     * Array to hold multiple indicator data for caching
+     */
     public ArrayList<ArrayList<DataPoint>> data = new ArrayList<ArrayList<DataPoint>>(){
         {
             add(new ArrayList<DataPoint>());

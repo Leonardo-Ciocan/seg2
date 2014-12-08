@@ -21,7 +21,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * The main activity
+ */
 public class MainActivity extends Activity {
 
 
@@ -38,12 +40,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        /*if(!getResources().getBoolean(R.bool.isTablet)) {
-            super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-        else {
-            super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }*/
+
 
         setContentView(R.layout.activity_main);
         getActionBar().hide();

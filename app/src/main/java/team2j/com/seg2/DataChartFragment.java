@@ -33,14 +33,25 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Random;
 
-
+/**
+ * The chart view on the main activity
+ */
 public class DataChartFragment extends Fragment {
 
     View view;
+    /**
+     * The internal chart used
+     */
     public BarChart chart;
 
+    /**
+     * The alternative line chart used
+     */
     public LineChart lineChart;
 
+    /**
+     * Whether to show values in the chart
+     */
     public boolean showValuesBoolean = false;
     Random rnd = new Random();
     @Override
@@ -123,6 +134,11 @@ public class DataChartFragment extends Fragment {
     }
 
     ArrayList<DataPoint> points;
+
+    /**
+     * Draws the chart
+     * @param points The data to shape the graph
+     */
     public void renderData(ArrayList<DataPoint> points){
 
         this.points = points;
@@ -247,6 +263,9 @@ public class DataChartFragment extends Fragment {
 
     }
 
+    /**
+     * Triggers the animation on the UI thread
+     */
     public void animate(){
         getActivity().runOnUiThread(new Runnable() {
             @Override
