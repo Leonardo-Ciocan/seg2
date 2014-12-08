@@ -31,8 +31,11 @@ public class DownloadTask extends AsyncTask<String, Object, Object> {
         try {
             URL u = new URL(urls[0]);
             HttpURLConnection c = (HttpURLConnection) u.openConnection();
+
+
             c.setRequestMethod("GET");
             c.setRequestProperty("Content-length", "0");
+
             c.setUseCaches(false);
             c.setAllowUserInteraction(false);
             c.connect();
@@ -43,10 +46,13 @@ public class DownloadTask extends AsyncTask<String, Object, Object> {
                 case 200:
                 case 201:
                     BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
+
                     StringBuilder sb = new StringBuilder();
                     String line;
+
+
                     while ((line = br.readLine()) != null) {
-                        sb.append(line + "\n");
+                            sb.append(line + "\n");
                     }
                     br.close();
                     result = sb.toString();
@@ -56,12 +62,6 @@ public class DownloadTask extends AsyncTask<String, Object, Object> {
             ArrayList<DataPoint> population = Core.parse(result);
 
 
-        /*//this download is done
-        Core.pending_downloads--;
-        //if it's the last one then we are done downloading - draw the chart
-        if(Core.pending_downloads == 0){
-            Core.listener.ready();
-        }*/
 
             listener.downloaded(population);
             return population;
