@@ -132,6 +132,16 @@ public class MainActivity extends Activity {
                     chartFragment.chart.setDescription("Urban population");
                 }
 
+                if (type == 0) {
+                    chartFragment.lineChart.setDescription("CO2");
+                } else if (type == 1) {
+                    chartFragment.lineChart.setDescription("Life expectancy");
+                } else if (type == 2) {
+                    chartFragment.lineChart.setDescription("Population");
+                } else if (type == 3) {
+                    chartFragment.lineChart.setDescription("Urban population");
+                }
+
                 chartFragment.renderData(points);
 
 
